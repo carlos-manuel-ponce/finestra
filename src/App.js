@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { supabase } from "./supabaseClient";
-import { PlusCircle, List, BarChart2, Bell, Settings, Download, Home, CalendarDays, ChevronLeft, ChevronRight, Eye } from 'lucide-react'; // Importa los iconos de Lucide React
+import { PlusCircle, List, BarChart2, Bell, Download, Home, CalendarDays, ChevronLeft, ChevronRight, Eye, Users, Edit } from 'lucide-react'; // Eliminado Settings
 
 // --- Componente Modal Personalizado ---
 const Modal = ({ message, type, onConfirm, onCancel, onClose, onInputChange, inputValue, children }) => {
@@ -10,7 +10,7 @@ const Modal = ({ message, type, onConfirm, onCancel, onClose, onInputChange, inp
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)', // Fondo más oscuro para el modal
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -18,59 +18,69 @@ const Modal = ({ message, type, onConfirm, onCancel, onClose, onInputChange, inp
   };
 
   const contentStyle = {
-    backgroundColor: '#F8F8F8', // Fondo del modal claro
+    backgroundColor: '#1A1A1A', // Fondo del modal negro muy oscuro
     padding: '30px',
     borderRadius: '8px',
-    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
-    maxWidth: type === 'details' ? '600px' : '400px', // Más ancho para detalles
+    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.7)', // Sombra más pronunciada
+    maxWidth: type === 'details' || type === 'editClient' ? '600px' : '400px', // Más ancho para detalles y edición de cliente
     width: '90%',
     textAlign: 'center',
-    color: '#666666', // Texto gris
-    fontFamily: 'Arial, sans-serif',
-    border: '1px solid #CCCCCC', // Borde gris claro
+    color: '#E0E0E0', // Texto gris claro para contraste
+    fontFamily: 'Roboto, sans-serif', // Fuente más moderna
+    border: '1px solid #333333', // Borde gris oscuro
     maxHeight: '80vh', // Limitar altura para scroll
     overflowY: 'auto', // Scroll si el contenido es largo
   };
 
   const buttonContainerStyle = {
-    marginTop: '20px',
+    marginTop: '30px', // Mayor espacio
     display: 'flex',
     justifyContent: 'center',
-    gap: '15px',
+    gap: '20px', // Mayor espacio entre botones
   };
 
   const buttonStyle = {
-    padding: '10px 20px',
+    padding: '12px 25px', // Mayor padding
     fontWeight: 'bold',
     cursor: 'pointer',
-    backgroundColor: '#1a2b40', // Azul marino oscuro para botones
+    backgroundColor: '#333333', // Gris oscuro para botones
     color: '#FFFFFF', // Texto blanco
-    border: '1px solid #CCCCCC', // Borde gris claro
-    borderRadius: '4px',
+    border: 'none', // Sin borde
+    borderRadius: '6px', // Bordes más suaves
     fontSize: '16px',
+    transition: 'background-color 0.3s ease, transform 0.2s ease', // Transición para hover
+    boxShadow: '0 2px 5px rgba(0,0,0,0.4)', // Sombra sutil
+    '&:hover': {
+      backgroundColor: '#555555', // Gris más claro al pasar el ratón
+      transform: 'translateY(-1px)',
+    }
   };
 
   const cancelButtonLightStyle = {
     ...buttonStyle,
-    backgroundColor: '#999999', // Gris medio para cancelar
-    color: '#FFFFFF',
-    border: '1px solid #CCCCCC',
+    backgroundColor: '#555555', // Gris medio para cancelar
+    '&:hover': {
+      backgroundColor: '#777777',
+      transform: 'translateY(-1px)',
+    }
   };
 
   const inputStyle = {
     width: 'calc(100% - 20px)',
-    padding: '10px',
-    margin: '15px 0',
+    padding: '12px',
+    margin: '20px 0',
     fontSize: '16px',
-    borderRadius: '4px',
-    border: '1px solid #CCCCCC', // Borde gris claro
-    color: '#666666', // Texto gris
+    borderRadius: '6px',
+    border: '1px solid #555555', // Borde gris oscuro
+    backgroundColor: '#2A2A2A', // Fondo del input más oscuro
+    color: '#E0E0E0', // Texto gris claro
+    outline: 'none', // Quitar outline por defecto
   };
 
   return (
     <div style={modalStyle}>
       <div style={contentStyle}>
-        <p style={{ fontSize: '18px', marginBottom: '20px' }}>{message}</p>
+        <p style={{ fontSize: '20px', marginBottom: '25px', color: '#FFFFFF' }}>{message}</p> {/* Título del modal en blanco */}
         {(type === 'prompt' || type === 'whatsappConfig') && (
           <input
             type="number" // Asumiendo que los números de WhatsApp son numéricos
@@ -81,14 +91,14 @@ const Modal = ({ message, type, onConfirm, onCancel, onClose, onInputChange, inp
             autoFocus
           />
         )}
-        {children} {/* Para contenido dinámico como los detalles del préstamo */}
+        {children} {/* Para contenido dinámico como los detalles del préstamo o el formulario de edición */}
         <div style={buttonContainerStyle}>
-          {(type === 'confirm' || type === 'prompt' || type === 'whatsappConfig') && (
+          {(type === 'confirm' || type === 'prompt' || type === 'whatsappConfig' || type === 'editClient') && (
             <button style={buttonStyle} onClick={onConfirm}>
               Aceptar
             </button>
           )}
-          {(type === 'confirm' || type === 'prompt' || type === 'whatsappConfig') && (
+          {(type === 'confirm' || type === 'prompt' || type === 'whatsappConfig' || type === 'editClient') && (
             <button style={cancelButtonLightStyle} onClick={onCancel}>
               Cancelar
             </button>
@@ -135,26 +145,26 @@ const StatusBar = ({ usuario }) => {
         top: 0,
         left: 0,
         width: "100%",
-        backgroundColor: "#1a2b40", // Azul marino oscuro
+        backgroundColor: "#000000", // Negro puro para la barra de estado
         color: "#FFFFFF", // Texto blanco
-        padding: "10px 20px",
+        padding: "12px 25px", // Mayor padding
         display: "flex",
         justifyContent: "space-around", // Mejorar la distribución
         alignItems: "center",
         zIndex: 1000,
-        fontFamily: "Arial, sans-serif",
+        fontFamily: "Roboto, sans-serif", // Fuente moderna
         fontSize: "14px",
-        boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.6)", // Sombra más oscura y pronunciada
       }}
     >
       <div>
-        <strong>Usuario:</strong> {usuario}
+        <strong style={{ color: '#B0B0B0' }}>Usuario:</strong> {usuario} {/* Gris más claro para etiquetas */}
       </div>
       <div>
-        <strong>Fecha:</strong> {formattedDate}
+        <strong style={{ color: '#B0B0B0' }}>Fecha:</strong> {formattedDate}
       </div>
       <div>
-        <strong>Hora:</strong> {formattedTime}
+        <strong style={{ color: '#B0B0B0' }}>Hora:</strong> {formattedTime}
       </div>
     </div>
   );
@@ -170,41 +180,50 @@ const DashboardResumen = ({ capitalInvertido, retornoCapitalInvertido, ganancia 
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFFFFF", // Fondo blanco
-    padding: "40px",
-    gap: "20px",
+    backgroundColor: "#0F0F0F", // Fondo muy oscuro para el dashboard
+    padding: "50px", // Mayor padding
+    gap: "30px", // Mayor espacio entre tarjetas
     flexWrap: "wrap",
-    fontFamily: "Arial, sans-serif",
-    color: "#666666", // Texto gris
+    fontFamily: "Roboto, sans-serif", // Fuente moderna
+    color: "#E0E0E0", // Texto gris claro
+    borderRadius: '10px', // Bordes redondeados
+    boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5)', // Sombra interna sutil
   };
 
   const cardStyle = {
-    backgroundColor: "#F8F8F8", // Fondo de tarjeta casi blanco
-    color: "#666666", // Texto gris
-    padding: "20px",
-    borderRadius: "4px",
-    border: "2px solid #1a2b40", // Borde azul marino oscuro
-    fontFamily: "Arial, sans-serif",
-    textAlign: "center",
-    minWidth: "250px",
-    flex: "1 1 auto",
-    boxShadow: "3px 3px 6px #CCCCCC", // Sombra gris claro
+    backgroundColor: '#1A1A1A', // Fondo de tarjeta negro oscuro
+    color: '#E0E0E0', // Texto gris claro
+    padding: '30px', // Mayor padding
+    borderRadius: '8px', // Bordes redondeados
+    border: '1px solid #333333', // Borde gris oscuro sutil
+    fontFamily: 'Roboto, sans-serif',
+    textAlign: 'center',
+    minWidth: '280px', // Mayor ancho mínimo
+    flex: '1 1 auto',
+    boxShadow: '0 6px 15px rgba(0,0,0,0.6)', // Sombra más pronunciada
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease', // Transición para hover
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: '0 10px 25px rgba(0,0,0,0.8)',
+    }
   };
 
   const titleStyle = {
-    fontSize: "16px",
+    fontSize: "17px",
     fontWeight: "bold",
-    marginBottom: "10px",
-    borderBottom: "1px solid #1a2b40", // Borde inferior azul marino oscuro
-    paddingBottom: "6px",
-    letterSpacing: "1px",
-    color: "#1a2b40", // Título azul marino oscuro
+    marginBottom: "15px",
+    borderBottom: "1px solid #555555", // Borde inferior gris medio
+    paddingBottom: "8px",
+    letterSpacing: "1.5px", // Más espaciado
+    color: "#B0B0B0", // Título gris claro
+    textTransform: 'uppercase', // Mayúsculas
   };
 
   const valueStyle = {
-    fontSize: "22px",
+    fontSize: "28px", // Mayor tamaño
     fontWeight: "bold",
-    color: "#666666", // Valor gris
+    color: "#FFFFFF", // Valor blanco puro
+    marginTop: '10px',
   };
 
   return (
@@ -235,42 +254,51 @@ const DashboardHistorial = ({ totalAbonado, totalDemora }) => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFFFFF", // Fondo blanco
-    padding: "20px",
-    gap: "20px",
+    backgroundColor: "#0F0F0F", // Fondo muy oscuro
+    padding: "30px", // Mayor padding
+    gap: "25px", // Mayor espacio
     flexWrap: "wrap",
-    fontFamily: "Arial, sans-serif",
-    color: "#666666", // Texto gris
-    marginTop: "20px"
+    fontFamily: "Roboto, sans-serif",
+    color: "#E0E0E0",
+    marginTop: "30px", // Mayor margen superior
+    borderRadius: '10px',
+    boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5)',
   };
   
   const cardStyle = {
-    backgroundColor: "#F8F8F8", // Fondo de tarjeta casi blanco
-    color: "#666666", // Texto gris
-    padding: "15px",
-    borderRadius: "4px",
-    border: "2px solid #1a2b40", // Borde azul marino oscuro
-    fontFamily: "Arial, sans-serif",
-    textAlign: "center",
-    minWidth: "200px",
-    flex: "1 1 auto",
-    boxShadow: "3px 3px 6px #CCCCCC", // Sombra gris claro
+    backgroundColor: '#1A1A1A', // Fondo de tarjeta negro oscuro
+    color: '#E0E0E0', // Texto gris claro
+    padding: '25px', // Mayor padding
+    borderRadius: '8px',
+    border: '1px solid #333333',
+    fontFamily: 'Roboto, sans-serif',
+    textAlign: 'center',
+    minWidth: '220px',
+    flex: '1 1 auto',
+    boxShadow: '0 6px 15px rgba(0,0,0,0.6)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: '0 10px 25px rgba(0,0,0,0.8)',
+    }
   };
   
   const titleStyle = {
-    fontSize: "15px",
+    fontSize: "16px",
     fontWeight: "bold",
-    marginBottom: "8px",
-    borderBottom: "1px solid #1a2b40", // Borde inferior azul marino oscuro
-    paddingBottom: "5px",
-    letterSpacing: "1px",
-    color: "#1a2b40", // Título azul marino oscuro
+    marginBottom: "12px",
+    borderBottom: "1px solid #555555",
+    paddingBottom: "7px",
+    letterSpacing: "1.2px",
+    color: "#B0B0B0", // Título gris claro
+    textTransform: 'uppercase',
   };
   
   const valueStyle = {
-    fontSize: "20px",
+    fontSize: "24px",
     fontWeight: "bold",
-    color: "#666666", // Valor gris
+    color: "#FFFFFF",
+    marginTop: '8px',
   };
   
   return (
@@ -280,7 +308,7 @@ const DashboardHistorial = ({ totalAbonado, totalDemora }) => {
         <div style={valueStyle}>${seguro(totalAbonado)}</div>
       </div>
       <div style={cardStyle}>
-        <div style={titleStyle}>TOTAL DEMORA</div>
+        <div style={titleStyle}>TOTAL POR DEMORA</div>
         <div style={valueStyle}>${seguro(totalDemora)}</div>
       </div>
     </div>
@@ -290,43 +318,63 @@ const DashboardHistorial = ({ totalAbonado, totalDemora }) => {
 // Mover ESTILOS aquí, fuera de cualquier componente
 const ESTILOS = {
   card: {
-    backgroundColor: "#F8F8F8", // Fondo de tarjeta casi blanco
-    padding: "20px",
-    borderRadius: "4px",
-    border: "2px solid #1a2b40", // Borde azul marino oscuro
-    marginBottom: "20px",
-    boxShadow: "3px 3px 6px #CCCCCC", // Sombra gris claro
+    backgroundColor: '#1A1A1A', // Fondo de tarjeta negro oscuro
+    padding: '25px', // Mayor padding
+    borderRadius: '8px',
+    border: '1px solid #333333', // Borde gris oscuro
+    marginBottom: '25px', // Mayor margen
+    boxShadow: '0 6px 15px rgba(0,0,0,0.6)',
   },
-  // La propiedad 'table' se ha eliminado de aquí y se ha inlined en el componente AuditoriaPrestamos
   th: {
-    border: '1px solid #CCCCCC', // Borde gris claro
-    padding: '8px',
-    backgroundColor: '#1a2b40', // Azul marino oscuro
-    color: '#FFFFFF' // Texto blanco
+    border: '1px solid #555555', // Borde gris medio
+    padding: '12px 10px', // Mayor padding
+    backgroundColor: '#0A0A0A', // Fondo de encabezado de tabla negro puro
+    color: '#FFFFFF', // Texto blanco
+    fontWeight: 'bold',
+    fontSize: '15px',
+    letterSpacing: '0.5px',
   },
   td: {
-    border: '1px solid #CCCCCC', // Borde gris claro
-    padding: '8px',
-    color: '#666666', // Texto gris
+    border: '1px solid #222222', // Borde gris más oscuro
+    padding: '10px',
+    color: '#E0E0E0', // Texto gris claro
+    fontSize: '14px',
   },
   button: {
-    padding: '12px 24px',
+    padding: '14px 28px', // Mayor padding
     fontWeight: 'bold',
     cursor: 'pointer',
-    backgroundColor: '#1a2b40', // Azul marino oscuro
+    background: 'linear-gradient(145deg, #222222, #333333)', // Degradado más profesional
     color: '#FFFFFF', // Texto blanco
-    border: '1px solid #CCCCCC', // Borde gris claro
-    borderRadius: '4px',
-    fontSize: '16px',
-    display: 'flex', // Para alinear icono y texto
+    border: 'none',
+    borderRadius: '8px', // Bordes más redondeados
+    fontSize: '17px', // Mayor tamaño de fuente
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '8px', // Espacio entre icono y texto
-    boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' // Sombra para botones
+    gap: '10px', // Mayor espacio entre icono y texto
+    boxShadow: '5px 5px 15px rgba(0,0,0,0.6), -5px -5px 15px rgba(50,50,50,0.2)', // Neumorfismo suave
+    transition: 'all 0.3s ease-in-out', // Transición para todos los cambios
+    '&:hover': {
+      background: 'linear-gradient(145deg, #333333, #444444)', // Degradado más claro al pasar el ratón
+      transform: 'translateY(-3px)', // Efecto de elevación
+      boxShadow: '8px 8px 20px rgba(0,0,0,0.8), -8px -8px 20px rgba(70,70,70,0.3)', // Sombra más pronunciada
+    },
+    '&:active': {
+      transform: 'translateY(1px)', // Efecto de presión al hacer click
+      boxShadow: '2px 2px 5px rgba(0,0,0,0.5) inset', // Sombra interna
+    },
+    minWidth: '220px', // Añadido para igualar el ancho de los botones
+  },
+  buttonSecondary: { // Nuevo estilo para botones secundarios si se necesitan
+    backgroundColor: '#555555',
+    '&:hover': {
+      backgroundColor: '#777777',
+    }
   }
 };
 
-const AuditoriaPrestamos = ({ registros, cambiarEstado, setView, onSendDailyBalanceReport }) => {
+const AuditoriaPrestamos = ({ registros, cambiarEstado, setView, onSendDailyBalanceReport, retornoCapitalInvertido }) => { 
   // Saldo inicial fijo (se edita directamente en el código)
   const SALDO_INICIAL = 0.00;
   
@@ -339,95 +387,39 @@ const AuditoriaPrestamos = ({ registros, cambiarEstado, setView, onSendDailyBala
   
   const saldoActual = SALDO_INICIAL - totalEgresos + totalIngresos;
 
-  // Preparar datos para el gráfico de egresos e ingresos
-  const dailyData = {};
-  // Para un gráfico de velas o barras, necesitamos agrupar por fecha.
-  // Usaremos la fecha de vencimiento como el punto de referencia principal para cada préstamo.
-  // Si un préstamo se activa o paga en una fecha diferente a su vencimiento,
-  // idealmente necesitaríamos campos `fechaActivacion` y `fechaPago` en la base de datos.
-  // Por ahora, para simplificar y usar los datos existentes, asumiremos que
-  // los egresos/ingresos se registran en la fecha de vencimiento o la fecha actual (simulada).
-  registros.forEach(registro => {
-    // Usar la fecha de vencimiento para agrupar los datos
-    const date = registro.vencimiento; 
-    if (!dailyData[date]) {
-      dailyData[date] = { ingresos: 0, egresos: 0 };
-    }
-    if (registro.estado === 'Activo') {
-      dailyData[date].egresos += parseFloat(registro.monto || 0);
-    } else if (registro.estado === 'Pagado') {
-      dailyData[date].ingresos += parseFloat(registro.abonado || 0);
-    }
-  });
-
-  const sortedDates = Object.keys(dailyData).sort();
-  const maxAmount = Math.max(...Object.values(dailyData).flatMap(d => [d.ingresos, d.egresos, 1])); // Evitar división por cero
-  const chartHeight = 200; // Altura fija para el gráfico
-
   return (
-    <div style={{ paddingTop: "70px", maxWidth: '1200px', margin: '0 auto' }}>
-      <h2 style={{ textAlign: "center", marginBottom: '30px', color: '#1a2b40' }}>Auditoría de Préstamos (EN DESARROLLO)</h2>
+    <div style={{ paddingTop: "80px", maxWidth: '1300px', margin: '0 auto', backgroundColor: '#0F0F0F', borderRadius: '10px', boxShadow: '0 8px 25px rgba(0,0,0,0.7)', padding: '40px' }}>
+      <h2 style={{ textAlign: "center", marginBottom: '40px', color: '#FFFFFF', fontSize: '32px', letterSpacing: '2px' }}>Auditoría de Préstamos</h2>
       
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginBottom: '30px' }}>
         <div style={ESTILOS.card}>
-          <h3 style={{ marginTop: 0, color: '#1a2b40' }}>Saldo del Sistema</h3>
-          <p style={{color: '#666666'}}><strong>Total Egresos:</strong> ${totalEgresos.toFixed(2)}</p>
-          <p style={{color: '#666666'}}><strong>Total Ingresos:</strong> ${totalIngresos.toFixed(2)}</p>
-          <p style={{color: '#666666'}}><strong>Saldo Actual:</strong> ${saldoActual.toFixed(2)}</p>
+          <h3 style={{ marginTop: 0, color: '#B0B0B0', fontSize: '24px', marginBottom: '20px' }}>Saldo del Sistema</h3>
+          <p style={{color: '#E0E0E0', fontSize: '18px', marginBottom: '10px'}}><strong>Total Egresos:</strong> <span style={{color: '#FF6B6B'}}>${totalEgresos.toFixed(2)}</span></p> {/* Rojo para egresos */}
+          <p style={{color: '#E0E0E0', fontSize: '18px', marginBottom: '10px'}}><strong>Total Ingresos:</strong> <span style={{color: '#6BFF6B'}}>${totalIngresos.toFixed(2)}</span></p> {/* Verde para ingresos */}
+          <p style={{color: '#FFFFFF', fontSize: '22px', fontWeight: 'bold', borderTop: '1px solid #555555', paddingTop: '15px', marginTop: '20px'}}><strong>Saldo Actual:</strong> ${saldoActual.toFixed(2)}</p>
+        </div>
+        {/* Placeholder para un segundo card si se necesita */}
+        <div style={ESTILOS.card}>
+            <h3 style={{ marginTop: 0, color: '#B0B0B0', fontSize: '24px', marginBottom: '20px' }}>Análisis de Fondos</h3>
+            <p style={{color: '#E0E0E0', fontSize: '18px', marginBottom: '10px'}}>Préstamos Activos: <span style={{fontWeight: 'bold'}}>{prestamosActivos.length}</span></p>
+            <p style={{color: '#E0E0E0', fontSize: '18px', marginBottom: '10px'}}>Préstamos Pagados: <span style={{fontWeight: 'bold'}}>{prestamosPagados.length}</span></p>
+            <p style={{color: '#E0E0E0', fontSize: '18px', marginBottom: '10px'}}>Proyección de ingresos: <span style={{color: '#6BFF6B'}}>${retornoCapitalInvertido.toFixed(2)}</span></p>
         </div>
       </div>
+      {/* ELIMINADO: SECCIÓN DEL GRÁFICO DE FLUJO DIARIO DE FONDOS */}
       
-      <div style={ESTILOS.card}>
-        <h3 style={{ marginTop: 0, color: '#1a2b40' }}>Flujo Diario de Fondos</h3>
-        <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'flex-end', height: chartHeight + 'px', borderBottom: '1px solid #CCCCCC', paddingBottom: '5px' }}>
-          {sortedDates.map(date => {
-            const data = dailyData[date];
-            const ingresoHeight = (data.ingresos / maxAmount) * chartHeight;
-            const egresoHeight = (data.egresos / maxAmount) * chartHeight;
-            return (
-              <div key={date} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30px', margin: '0 5px' }}>
-                <div 
-                  title={`Ingresos: $${data.ingresos.toFixed(2)}`}
-                  style={{ 
-                    width: '20px', 
-                    height: ingresoHeight + 'px', 
-                    backgroundColor: 'lightgreen', 
-                    marginBottom: '2px',
-                    borderRadius: '2px',
-                  }}
-                ></div>
-                <div 
-                  title={`Egresos: $${data.egresos.toFixed(2)}`}
-                  style={{ 
-                    width: '20px', 
-                    height: egresoHeight + 'px', 
-                    backgroundColor: 'salmon', 
-                    borderRadius: '2px',
-                  }}
-                ></div>
-                <span style={{ fontSize: '10px', color: '#666666', marginTop: '5px' }}>{date.substring(5)}</span> {/* Muestra solo MM-DD */}
-              </div>
-            );
-          })}
-        </div>
-        <p style={{ fontSize: '12px', textAlign: 'center', marginTop: '10px', color: '#666666' }}>
-          <span style={{ display: 'inline-block', width: '10px', height: '10px', backgroundColor: 'lightgreen', borderRadius: '2px', marginRight: '5px' }}></span> Ingresos &nbsp;
-          <span style={{ display: 'inline-block', width: '10px', height: '10px', backgroundColor: 'salmon', borderRadius: '2px', marginRight: '5px' }}></span> Egresos
-        </p>
-      </div>
-      
-      <div style={{ textAlign: 'center', marginTop: '30px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+      <div style={{ textAlign: 'center', marginTop: '40px', display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
         <button 
           onClick={() => setView("home")} 
           style={ESTILOS.button}
         >
-          <Home size={20} /> Volver al Inicio
+          <Home size={22} /> Volver al Inicio
         </button>
         <button 
-          onClick={onSendDailyBalanceReport} // Botón para enviar reporte diario por WhatsApp
+          onClick={onSendDailyBalanceReport} 
           style={ESTILOS.button}
         >
-          <Bell size={20} /> Enviar Reporte Diario (WhatsApp)
+          <Bell size={22} /> Generar Reporte de Saldo
         </button>
       </div>
     </div>
@@ -437,7 +429,6 @@ const AuditoriaPrestamos = ({ registros, cambiarEstado, setView, onSendDailyBala
 // Nuevo componente para el Calendario
 const PantallaCalendario = ({ setView, registros, showCustomAlert }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [filter, setFilter] = useState('all'); // 'all', 'activo', 'pagado', 'vencimiento', 'activoPagado'
   const [selectedDayEvents, setSelectedDayEvents] = useState([]);
   const [detailsModalVisible, setDetailsModalVisible] = useState(false);
 
@@ -447,11 +438,11 @@ const PantallaCalendario = ({ setView, registros, showCustomAlert }) => {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const numDays = lastDay.getDate();
-    const startDayOfWeek = firstDay.getDay(); // 0 for Sunday, 1 for Monday
+    const startDayOfWeek = firstDay.getDay(); 
 
     const days = [];
     for (let i = 0; i < startDayOfWeek; i++) {
-      days.push(null); // Placeholder for days before the 1st
+      days.push(null); 
     }
     for (let i = 1; i <= numDays; i++) {
       days.push(new Date(year, month, i));
@@ -468,43 +459,26 @@ const PantallaCalendario = ({ setView, registros, showCustomAlert }) => {
     const allEventsForDay = [];
 
     registros.forEach(registro => {
-      // Check for vencimiento
+      // Eventos de vencimiento
       if (registro.vencimiento === formattedDay) {
         allEventsForDay.push({ type: 'vencimiento', id: registro.id, ...registro });
       }
-      // Simulate creation/payment dates for calendar display
-      // IMPORTANT: In a real application, you should have actual date fields for 'fechaActivacion' and 'fechaPago'
-      // For this example, we're using current date as a proxy for 'activo' and 'pagado' events on the current day,
-      // and 'vencimiento' as the actual date from the record.
-      const todayFormatted = new Date().toISOString().split('T')[0];
-      if (registro.estado === 'Activo' && formattedDay === todayFormatted) { // This will only show 'activo' on the current real-world date
+      // Prestamos activos con fecha de inicio del prestamo igual al día
+      if (registro.estado === 'Activo' && registro.fecha_creacion?.split('T')[0] === formattedDay) { 
         allEventsForDay.push({ type: 'activo', id: registro.id, ...registro });
-      }
-      if (registro.estado === 'Pagado' && formattedDay === todayFormatted && registro.abonado) { // This will only show 'pagado' on the current real-world date
-        allEventsForDay.push({ type: 'pagado', id: registro.id, ...registro });
       }
     });
 
-    return allEventsForDay.filter(event => {
-      if (filter === 'all') {
-        return true;
-      } else if (filter === 'activo') {
-        return event.type === 'activo';
-      } else if (filter === 'pagado') {
-        return event.type === 'pagado';
-      } else if (filter === 'vencimiento') {
-        return event.type === 'vencimiento';
-      } else if (filter === 'activoPagado') { // "Activos y Pagados"
-        return event.type === 'activo' || event.type === 'pagado';
-      }
-      return false; // Should not be reached if filter is one of the above
-    });
+    // Filtramos para asegurar que no haya duplicados si un préstamo vence y es creado el mismo día
+    const uniqueEvents = Array.from(new Set(allEventsForDay.map(e => e.id)))
+                            .map(id => allEventsForDay.find(e => e.id === id));
+    
+    return uniqueEvents;
   };
 
   const eventColor = {
-    vencimiento: 'red',
-    activo: 'green',
-    pagado: 'blue',
+    vencimiento: '#FF6B6B', // Rojo suave
+    activo: '#6BFF6B', // Verde suave
   };
 
   const goToPreviousMonth = () => {
@@ -533,126 +507,73 @@ const PantallaCalendario = ({ setView, registros, showCustomAlert }) => {
   };
 
   return (
-    <div style={{ paddingTop: "70px", maxWidth: '1000px', margin: '0 auto', backgroundColor: '#FFFFFF', padding: '20px', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-      <h2 style={{ textAlign: "center", marginBottom: '20px', color: '#1a2b40' }}>Calendario de Préstamos  (EN DESARROLLO)</h2>
+    <div style={{ paddingTop: "80px", maxWidth: '1100px', margin: '0 auto', backgroundColor: '#0F0F0F', padding: '40px', borderRadius: '10px', boxShadow: '0 8px 25px rgba(0,0,0,0.7)', color: '#E0E0E0' }}>
+      <h2 style={{ textAlign: "center", marginBottom: '30px', color: '#FFFFFF', fontSize: '30px', letterSpacing: '1.5px' }}>Calendario de Préstamos</h2>
       
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <button 
           onClick={goToPreviousMonth} 
-          style={{ padding: '8px 15px', fontWeight: 'bold', cursor: 'pointer', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}
+          style={{ ...ESTILOS.button, padding: '10px 20px', fontSize: '16px' }}
         >
-          <ChevronLeft size={16} /> Mes Anterior
+          <ChevronLeft size={18} /> Mes Anterior
         </button>
-        <h3 style={{ textAlign: "center", margin: '0', color: '#666666' }}>{monthName}</h3>
+        <h3 style={{ textAlign: "center", margin: '0', color: '#B0B0B0', fontSize: '24px' }}>{monthName}</h3>
         <button 
           onClick={goToNextMonth} 
-          style={{ padding: '8px 15px', fontWeight: 'bold', cursor: "pointer", backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}
+          style={{ ...ESTILOS.button, padding: '10px 20px', fontSize: '16px' }}
         >
-          Mes Siguiente <ChevronRight size={16} />
+          Mes Siguiente <ChevronRight size={18} />
         </button>
       </div>
 
-      {/* Filtros del calendario */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '20px', color: '#666666' }}>
-        <label>
-          <input 
-            type="radio" 
-            value="all" 
-            checked={filter === 'all'} 
-            onChange={() => setFilter('all')} 
-            style={{ marginRight: '5px' }}
-          />
-          Todos
-        </label>
-        <label>
-          <input 
-            type="radio" 
-            value="activo" 
-            checked={filter === 'activo'} 
-            onChange={() => setFilter('activo')} 
-            style={{ marginRight: '5px' }}
-          />
-          Activos
-        </label>
-        <label>
-          <input 
-            type="radio" 
-            value="pagado" 
-            checked={filter === 'pagado'} 
-            onChange={() => setFilter('pagado')} 
-            style={{ marginRight: '5px' }}
-          />
-          Pagados
-        </label>
-        <label>
-          <input 
-            type="radio" 
-            value="activoPagado" 
-            checked={filter === 'activoPagado'} 
-            onChange={() => setFilter('activoPagado')} 
-            style={{ marginRight: '5px' }}
-          />
-          Activos y Pagados
-        </label>
-        <label>
-          <input 
-            type="radio" 
-            value="vencimiento" 
-            checked={filter === 'vencimiento'} 
-            onChange={() => setFilter('vencimiento')} 
-            style={{ marginRight: '5px' }}
-          />
-          Vencimientos
-        </label>
-      </div>
+      {/* ELIMINADO: FILTROS DEL CALENDARIO */}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '5px', marginBottom: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', marginBottom: '30px' }}>
         {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].map(day => (
-          <div key={day} style={{ fontWeight: 'bold', textAlign: 'center', color: '#1a2b40' }}>{day}</div>
+          <div key={day} style={{ fontWeight: 'bold', textAlign: 'center', color: '#FFFFFF', fontSize: '16px', paddingBottom: '10px', borderBottom: '1px solid #555555' }}>{day}</div>
         ))}
         {daysInMonth.map((day, index) => {
           const events = day ? getEventsForDay(day) : [];
+          const hasEvents = events.length > 0;
+          
+          const dayStyle = { 
+            border: '1px solid #333333', 
+            borderRadius: '6px', 
+            padding: '12px 8px', 
+            minHeight: '100px', 
+            textAlign: 'right', 
+            position: 'relative',
+            backgroundColor: day ? '#1A1A1A' : '#0A0A0A', // Oscuro para días, más oscuro para vacíos
+            color: '#E0E0E0',
+            cursor: day ? 'pointer' : 'default', 
+            transition: 'background-color 0.2s ease, transform 0.2s ease',
+            '&:hover': day ? { backgroundColor: '#3A3A3A', transform: 'translateY(-2px)' } : {},
+          };
+
           return (
             <div 
               key={index} 
-              style={{ 
-                border: '1px solid #CCCCCC', 
-                borderRadius: '4px', 
-                padding: '10px 5px', 
-                minHeight: '80px', 
-                textAlign: 'right', 
-                position: 'relative',
-                backgroundColor: day ? '#F8F8F8' : '#E0E0E0', // Fondo para días vacíos
-                color: '#666666',
-                cursor: day ? 'pointer' : 'default', // Cursor de puntero para días con contenido
-              }}
+              style={dayStyle}
               onClick={() => handleDayClick(day)}
             >
-              {day && <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>{day.getDate()}</div>}
-              {events.length > 0 && (
-                <div style={{ position: 'absolute', top: '5px', left: '5px' }}>
-                  <Eye size={16} color="#1a2b40" />
+              {day && <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '18px', color: '#FFFFFF' }}>{day.getDate()}</div>}
+              {hasEvents && (
+                <div style={{ position: 'absolute', top: '8px', left: '8px' }}>
+                  <Eye size={20} color="#6BFF6B" /> {/* Ojo verde para indicar eventos */}
                 </div>
               )}
-              <div style={{ position: 'absolute', bottom: '5px', left: '5px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                {events.map((event, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', fontSize: '10px', marginTop: '2px' }}>
-                    <span style={{ height: '8px', width: '8px', borderRadius: '50%', backgroundColor: eventColor[event.type], marginRight: '4px' }}></span>
-                    <span>{event.type === 'vencimiento' ? 'Vence' : event.type === 'activo' ? 'Activo' : 'Pagado'}</span>
-                  </div>
-                ))}
-              </div>
+              {/* ELIMINADO: PUNTOS DE COLORES */}
             </div>
           );
         })}
       </div>
 
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
+      <div style={{ textAlign: 'center', marginTop: '30px' }}>
         <button 
           onClick={() => setView("home")} 
-          style={{ padding: '10px 20px', fontWeight: 'bold', cursor: 'pointer', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', fontSize: '16px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
+          style={ESTILOS.button}
         >
-          <Home size={20} /> Volver al Inicio
+          <Home size={22} /> Volver al Inicio
         </button>
       </div>
 
@@ -662,15 +583,14 @@ const PantallaCalendario = ({ setView, registros, showCustomAlert }) => {
           type="details"
           onClose={() => setDetailsModalVisible(false)}
         >
-          <div style={{ textAlign: 'left', marginTop: '10px', color: '#666666' }}>
+          <div style={{ textAlign: 'left', marginTop: '15px', color: '#E0E0E0', fontSize: '16px' }}>
             {selectedDayEvents.map(event => (
-              <div key={event.id} style={{ marginBottom: '10px', padding: '10px', border: '1px solid #E0E0E0', borderRadius: '4px', backgroundColor: '#F0F0F0' }}>
-                <strong>Tipo:</strong> <span style={{ color: eventColor[event.type] }}>{event.type === 'vencimiento' ? 'Vencimiento' : event.type === 'activo' ? 'Activo' : 'Pagado'}</span><br/>
+              <div key={event.id} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #333333', borderRadius: '6px', backgroundColor: '#2A2A2A', boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+                <strong>Tipo:</strong> <span style={{ color: eventColor[event.type], fontWeight: 'bold' }}>{event.type === 'vencimiento' ? 'Vencimiento' : 'Activo'}</span><br/>
                 <strong>ID:</strong> {event.id}<br/>
                 <strong>Cliente:</strong> {event.nombre} {event.apellido}<br/>
-                <strong>Monto Entregado:</strong> ${parseFloat(event.monto).toFixed(2)}<br/>
-                <strong>Monto a Devolver:</strong> ${parseFloat(event.montoDevolver).toFixed(2)}<br/>
-                {/* {event.abonado && <strong>Monto Abonado:</strong> ${parseFloat(event.abonado).toFixed(2)}<br/>} */}
+                <strong>Monto Entregado:</strong> <span style={{color: '#6BFF6B'}}>${parseFloat(event.monto).toFixed(2)}</span><br/>
+                <strong>Monto a Devolver:</strong> <span style={{color: '#FFD700'}}>${parseFloat(event.montoDevolver).toFixed(2)}</span><br/> {/* Amarillo para monto a devolver */}
                 <strong>Vencimiento:</strong> {event.vencimiento}
               </div>
             ))}
@@ -681,6 +601,115 @@ const PantallaCalendario = ({ setView, registros, showCustomAlert }) => {
   );
 };
 
+// Nuevo componente para la Pantalla de Clientes
+const PantallaClientes = ({ setView, clientes, onEditClient, loading, showCustomAlert }) => {
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [currentClientToEdit, setCurrentClientToEdit] = useState(null);
+  const [editedApellido, setEditedApellido] = useState('');
+  const [editedNombre, setEditedNombre] = useState('');
+
+  const handleEditClick = (client) => {
+    setCurrentClientToEdit(client);
+    setEditedApellido(client.apellido);
+    setEditedNombre(client.nombre);
+    setEditModalVisible(true);
+  };
+
+  const handleEditConfirm = async () => {
+    if (!editedApellido || !editedNombre) {
+      showCustomAlert("El apellido y el nombre no pueden estar vacíos.");
+      return;
+    }
+    await onEditClient(currentClientToEdit.apellido, currentClientToEdit.nombre, editedApellido, editedNombre);
+    setEditModalVisible(false);
+  };
+
+  return (
+    <div style={{ paddingTop: "80px", maxWidth: '1200px', margin: '0 auto', backgroundColor: '#0F0F0F', padding: '40px', borderRadius: '10px', boxShadow: '0 8px 25px rgba(0,0,0,0.7)', color: '#E0E0E0' }}>
+      <h2 style={{ textAlign: "center", marginBottom: '30px', color: '#FFFFFF', fontSize: '30px', letterSpacing: '1.5px' }}>Gestión de Clientes</h2>
+      
+      {loading ? (
+        <p style={{ textAlign: "center", fontSize: "20px", color: '#B0B0B0' }}>Cargando clientes...</p>
+      ) : (
+        <table
+          style={{
+            width: "100%",
+            background: "#1A1A1A", 
+            color: "#E0E0E0", 
+            marginTop: 20,
+            borderCollapse: "collapse", 
+            fontSize: "15px",
+            borderRadius: '8px',
+            overflow: 'hidden',
+            boxShadow: '0 6px 15px rgba(0,0,0,0.6)',
+          }}
+        >
+          <thead>
+            <tr>
+              <th style={ESTILOS.th}>Apellido</th>
+              <th style={ESTILOS.th}>Nombre</th>
+              <th style={ESTILOS.th}>Préstamos Registrados</th>
+              <th style={ESTILOS.th}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clientes.map((client, index) => (
+              <tr key={index} style={{ textAlign: "center" }}>
+                <td style={ESTILOS.td}>{client.apellido}</td>
+                <td style={ESTILOS.td}>{client.nombre}</td>
+                <td style={ESTILOS.td}>{client.loanCount}</td>
+                <td style={ESTILOS.td}>
+                  <button 
+                    onClick={() => handleEditClick(client)} 
+                    style={{ ...ESTILOS.button, padding: '8px 15px', fontSize: '14px', gap: '5px', borderRadius: '5px', minWidth: 'unset' }}
+                  >
+                    <Edit size={16} /> Editar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      <div style={{ textAlign: 'center', marginTop: '30px' }}>
+        <button 
+          onClick={() => setView("home")} 
+          style={ESTILOS.button}
+        >
+          <Home size={22} /> Volver al Inicio
+        </button>
+      </div>
+
+      {editModalVisible && (
+        <Modal
+          message="Editar Datos del Cliente"
+          type="editClient"
+          onClose={() => setEditModalVisible(false)}
+          onConfirm={handleEditConfirm}
+          onCancel={() => setEditModalVisible(false)}
+        >
+          <div style={{ textAlign: 'left', marginTop: '15px', color: '#E0E0E0', fontSize: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '8px' }}>Apellido:</label>
+            <input
+              type="text"
+              value={editedApellido}
+              onChange={(e) => setEditedApellido(e.target.value)}
+              style={{ width: 'calc(100% - 20px)', padding: '10px', marginBottom: '15px', borderRadius: '4px', border: '1px solid #555555', backgroundColor: '#2A2A2A', color: '#E0E0E0' }}
+            />
+            <label style={{ display: 'block', marginBottom: '8px' }}>Nombre:</label>
+            <input
+              type="text"
+              value={editedNombre}
+              onChange={(e) => setEditedNombre(e.target.value)}
+              style={{ width: 'calc(100% - 20px)', padding: '10px', marginBottom: '15px', borderRadius: '4px', border: '1px solid #555555', backgroundColor: '#2A2A2A', color: '#E0E0E0' }}
+            />
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+};
 
 function App() {
   const [view, setView] = useState("login");
@@ -697,56 +726,55 @@ function App() {
   const [errorLogin, setErrorLogin] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Estado para el número de WhatsApp, inicializado desde localStorage o un valor predeterminado
+  // eslint-disable-next-line no-unused-vars
   const [whatsappNumber, setWhatsappNumber] = useState(() => {
     const savedNumber = localStorage.getItem('whatsappNumber');
-    return savedNumber || '5491112345678'; // Número predeterminado si no hay uno guardado
+    return savedNumber || '5491112345678'; 
   });
 
-  // --- Estados y funciones para el Modal personalizado ---
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [modalType, setModalType] = useState("alert"); // 'alert', 'confirm', 'prompt', 'whatsappConfig'
+  const [modalType, setModalType] = useState("alert"); 
   const [modalCallback, setModalCallback] = useState(null);
-  const [modalInputValue, setModalInputValue] = useState(""); // Usado para prompt y whatsappConfig
+  const [modalInputValue, setModalInputValue] = useState(""); 
 
-  // Envuelve showCustomAlert con useCallback
+  const [clientSuggestions, setClientSuggestions] = useState([]);
+  const [allClients, setAllClients] = useState([]); // Para almacenar la lista de clientes únicos con conteo
+
   const showCustomAlert = useCallback((message, callback = () => {}) => {
     setModalMessage(message);
     setModalType("alert");
     setModalCallback(() => callback);
     setModalVisible(true);
-  }, []); // Dependencias vacías porque setModalMessage, setModalType, etc. son estables
+  }, []); 
 
-  // Envuelve showCustomConfirm con useCallback
   const showCustomConfirm = useCallback((message, onConfirm, onCancel = () => {}) => {
     setModalMessage(message);
     setModalType("confirm");
     setModalCallback(() => ({ onConfirm, onCancel }));
     setModalVisible(true);
-  }, []); // Dependencias vacías
+  }, []); 
 
-  // Envuelve showCustomPrompt con useCallback
   const showCustomPrompt = useCallback((message, onPromptConfirm, initialValue = "") => {
     setModalMessage(message);
     setModalType("prompt");
     setModalInputValue(initialValue);
     setModalCallback(() => onPromptConfirm);
     setModalVisible(true);
-  }, []); // Dependencias vacías
+  }, []); 
 
-  // Nueva función para mostrar el modal de configuración de WhatsApp
-  const showWhatsappConfigModal = useCallback(() => {
-    setModalMessage("Configurar Número de WhatsApp para Notificaciones:");
-    setModalType("whatsappConfig");
-    setModalInputValue(whatsappNumber); // Pre-llenar con el número actual
-    setModalCallback(() => (newNumber) => {
-      setWhatsappNumber(newNumber);
-      localStorage.setItem('whatsappNumber', newNumber);
-      showCustomAlert("Número de WhatsApp guardado exitosamente.");
-    });
-    setModalVisible(true);
-  }, [whatsappNumber, showCustomAlert]); // Depende de whatsappNumber y showCustomAlert
+  // Eliminado showWhatsappConfigModal ya que no se usa directamente en el código actual
+  // const showWhatsappConfigModal = useCallback(() => {
+  //   setModalMessage("Configurar Número de WhatsApp para Notificaciones:");
+  //   setModalType("whatsappConfig");
+  //   setModalInputValue(whatsappNumber); 
+  //   setModalCallback(() => (newNumber) => {
+  //     setWhatsappNumber(newNumber);
+  //     localStorage.setItem('whatsappNumber', newNumber);
+  //     showCustomAlert("Número de WhatsApp guardado exitosamente.");
+  //   });
+  //   setModalVisible(true);
+  // }, [whatsappNumber, showCustomAlert]); 
 
   const closeModal = useCallback(() => {
     setModalVisible(false);
@@ -754,16 +782,13 @@ function App() {
     setModalType("alert");
     setModalCallback(null);
     setModalInputValue("");
-  }, []); // Dependencias vacías
-
-  // --- Fin Estados y funciones para el Modal personalizado ---
+  }, []); 
 
   const USUARIOS_VALIDOS = {
     "PONCECARLOS": "1414",
     "ALANCORREA": "1706",
   };
 
-  // Envuelve cargarRegistros con useCallback
   const cargarRegistros = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
@@ -776,9 +801,19 @@ function App() {
       showCustomAlert('Hubo un error al cargar los registros. Por favor, intente de nuevo.');
     } else {
       setRegistros(data);
+      // Procesar clientes únicos y su conteo de préstamos
+      const clientsMap = {};
+      data.forEach(record => {
+        const key = `${record.apellido}-${record.nombre}`;
+        if (!clientsMap[key]) {
+          clientsMap[key] = { apellido: record.apellido, nombre: record.nombre, loanCount: 0 };
+        }
+        clientsMap[key].loanCount++;
+      });
+      setAllClients(Object.values(clientsMap));
     }
     setLoading(false);
-  }, [showCustomAlert]); // showCustomAlert ahora es una dependencia estable
+  }, [showCustomAlert]); 
 
   useEffect(() => {
     if (view !== "login") {
@@ -822,6 +857,7 @@ function App() {
           vencimiento: vencimientoCalculado,
           estado: "Activo",
           abonado: null,
+          fecha_creacion: new Date().toISOString().split('T')[0], // Añadir fecha de creación
         },
       ])
       .select();
@@ -833,23 +869,10 @@ function App() {
       setRegistros((prevRegistros) => [data[0], ...prevRegistros]);
       setForm({ apellido: "", nombre: "", monto: "", interes: "", plazo: "" });
       setView("registros");
-
-      // --- WhatsApp Notification for New Active Record ---
-      const newRecord = data[0];
-      const notificationMessage = `*Nuevo Registro Activo en Sistema de Registros de GRUPO CAPITAL:*\n\n` +
-                                  `ID: ${newRecord.id}\n` +
-                                  `Cliente: ${newRecord.nombre} ${newRecord.apellido}\n` +
-                                  `Monto Entregado: $${parseFloat(newRecord.monto).toFixed(2)}\n` +
-                                  `Monto a Devolver: $${parseFloat(newRecord.montoDevolver).toFixed(2)}\n` +
-                                  `Vencimiento: ${newRecord.vencimiento}\n` +
-                                  `Estado: Activo`;
-      sendWhatsAppNotification(notificationMessage);
-      // --- End WhatsApp Notification ---
     }
     setLoading(false);
   };
 
-  // Función para enviar notificaciones de WhatsApp (ahora local a App)
   const sendWhatsAppNotification = useCallback((message) => {
     if (!whatsappNumber) {
       showCustomAlert("Por favor, configure el número de WhatsApp antes de enviar notificaciones.");
@@ -857,9 +880,8 @@ function App() {
     }
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, "_blank");
-  }, [whatsappNumber, showCustomAlert]); // Depende de whatsappNumber y showCustomAlert
+  }, [whatsappNumber, showCustomAlert]); 
 
-  // Helper function to encapsulate the actual Supabase update logic
   const performStateUpdate = async (id, nuevoEstado, abonadoMonto) => {
     setLoading(true);
     const { data, error } = await supabase
@@ -876,7 +898,6 @@ function App() {
         registros.map((r) => (r.id === id ? data[0] : r))
       );
 
-      // --- WhatsApp Notification for Paid Record ---
       if (nuevoEstado === "Pagado") {
         const updatedRecord = data[0];
         const notificationMessage = `*Registro Abonado en Sistema de Registros de GRUPO CAPITAL:*\n\n` +
@@ -887,7 +908,6 @@ function App() {
                                     `Estado: Pagado`;
         sendWhatsAppNotification(notificationMessage);
       }
-      // --- End WhatsApp Notification ---
     }
     setLoading(false);
   };
@@ -915,9 +935,9 @@ function App() {
             performStateUpdate(id, nuevoEstado, parsedAbonado);
           }
         },
-        registroExistente.montoDevolver.toFixed(2) // Valor inicial para el prompt
+        registroExistente.montoDevolver.toFixed(2) 
       );
-      return; // Salir de la función, la actualización se maneja en el callback del prompt
+      return; 
     } else if (nuevoEstado === "Vencido") {
       showCustomConfirm(
         `¿Está seguro que desea marcar el registro ID ${id} como Vencido?`,
@@ -928,10 +948,9 @@ function App() {
           // El usuario canceló, no hacer nada
         }
       );
-      return; // Salir de la función, la actualización se maneja en el callback del confirm
+      return; 
     }
 
-    // Si no es 'Pagado' o 'Vencido', realizar la actualización directa
     performStateUpdate(id, nuevoEstado, null);
   };
 
@@ -965,17 +984,16 @@ function App() {
     }
   };
 
-  const SALDO_INICIAL = 0.00; // Definido aquí para que handleSendDailyBalanceReport pueda accederlo
+  const SALDO_INICIAL = 0.00; 
   const handleSendDailyBalanceReport = () => {
     const currentTotalEgresos = registros.filter(r => r.estado === "Activo").reduce((sum, prestamo) => sum + parseFloat(prestamo.monto || 0), 0);
     const currentTotalIngresos = registros.filter(r => r.estado === "Pagado").reduce((sum, prestamo) => sum + parseFloat(prestamo.abonado || 0), 0);
     const currentSaldoActual = SALDO_INICIAL - currentTotalEgresos + currentTotalIngresos;
 
-    const notificationMessage = `*Reporte de Saldo Diario - Sistema de Registros de GRUPO CAPITAL:*\n\n` +
+    const notificationMessage = `*Reporte de Saldo - Sistema de Registros de GRUPO CAPITAL:*\n\n` +
                                 `Fecha: ${new Date().toLocaleDateString("es-ES")}\n\n` +
-                                `Saldo Inicial del Sistema: $${SALDO_INICIAL.toFixed(2)}\n` +
-                                `Total Egresos (Préstamos Activos): $${currentTotalEgresos.toFixed(2)}\n` +
-                                `Total Ingresos (Préstamos Pagados): $${currentTotalIngresos.toFixed(2)}\n` +
+                                `Total Egresos: $${currentTotalEgresos.toFixed(2)}\n` +
+                                `Total Ingresos: $${currentTotalIngresos.toFixed(2)}\n` +
                                 `*Saldo Actual del Sistema: $${currentSaldoActual.toFixed(2)}*`;
     sendWhatsAppNotification(notificationMessage);
     showCustomAlert("Se está preparando el mensaje de WhatsApp con el reporte de saldo diario.");
@@ -1020,6 +1038,43 @@ function App() {
     }
   };
 
+  const handleApellidoChange = (e) => {
+    const inputApellido = e.target.value;
+    setForm({ ...form, apellido: inputApellido, nombre: "" }); // Reset nombre if apellido changes
+    if (inputApellido.length > 0) {
+      const filteredSuggestions = allClients.filter(
+        (client) => client.apellido.toLowerCase().startsWith(inputApellido.toLowerCase())
+      );
+      setClientSuggestions(filteredSuggestions);
+    } else {
+      setClientSuggestions([]);
+    }
+  };
+
+  const handleSuggestionClick = (client) => {
+    setForm({ ...form, apellido: client.apellido, nombre: client.nombre });
+    setClientSuggestions([]);
+  };
+
+  const handleEditClient = async (oldApellido, oldNombre, newApellido, newNombre) => {
+    setLoading(true);
+    const { error } = await supabase
+      .from('tabla-registros')
+      .update({ apellido: newApellido, nombre: newNombre })
+      .eq('apellido', oldApellido)
+      .eq('nombre', oldNombre);
+
+    if (error) {
+      console.error('Error al actualizar cliente en Supabase:', error.message);
+      showCustomAlert('Hubo un error al actualizar los datos del cliente. Por favor, intente de nuevo.');
+    } else {
+      showCustomAlert('Datos del cliente actualizados exitosamente.');
+      cargarRegistros(); // Recargar todos los registros para actualizar la vista de clientes
+    }
+    setLoading(false);
+  };
+
+
   const pantallaLogin = (
     <div
       style={{
@@ -1028,39 +1083,45 @@ function App() {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
-        backgroundColor: "#FFFFFF", // Fondo blanco
-        fontFamily: "Arial, sans-serif",
-        color: "#666666", // Texto gris
+        backgroundColor: "#0A0A0A", // Fondo negro oscuro
+        fontFamily: "Roboto, sans-serif", // Fuente moderna
+        color: "#E0E0E0", // Texto gris claro
       }}
     >
-      <h1 style={{ marginBottom: 20, fontWeight: "bold", color: '#1a2b40' }}>Iniciar Sesión</h1>
-      <form onSubmit={manejarLogin} style={{ display: "flex", flexDirection: "column", width: 280 }}>
+      <h1 style={{ marginBottom: 30, fontWeight: "bold", color: '#FFFFFF', fontSize: '38px', letterSpacing: '2px' }}>Iniciar Sesión</h1>
+      <form onSubmit={manejarLogin} style={{ display: "flex", flexDirection: "column", width: 320, padding: '30px', backgroundColor: '#1A1A1A', borderRadius: '10px', boxShadow: '0 8px 25px rgba(0,0,0,0.7)' }}>
         <input
           type="text"
           placeholder="Usuario"
           value={loginForm.usuario}
           onChange={(e) => setLoginForm({ ...loginForm, usuario: e.target.value })}
-          style={{ marginBottom: 10, padding: 10, fontSize: 16, border: '1px solid #CCCCCC', color: '#666666' }}
+          style={{ marginBottom: 20, padding: 15, fontSize: 18, border: '1px solid #333333', backgroundColor: '#2A2A2A', color: '#E0E0E0', borderRadius: '6px', outline: 'none' }}
         />
         <input
           type="password"
           placeholder="Contraseña"
           value={loginForm.password}
           onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-          style={{ marginBottom: 10, padding: 10, fontSize: 16, border: '1px solid #CCCCCC', color: '#666666' }}
+          style={{ marginBottom: 20, padding: 15, fontSize: 18, border: '1px solid #333333', backgroundColor: '#2A2A2A', color: '#E0E0E0', borderRadius: '6px', outline: 'none' }}
         />
-        {errorLogin && <div style={{ color: "red", marginBottom: 10 }}>{errorLogin}</div>}
+        {errorLogin && <div style={{ color: "#FF6B6B", marginBottom: 15, fontSize: '15px' }}>{errorLogin}</div>}
         <button
           type="submit"
           style={{
-            padding: 10,
+            padding: 15,
             fontWeight: "bold",
             cursor: "pointer",
-            backgroundColor: "#1a2b40", // Azul marino oscuro
+            backgroundColor: "#333333", // Gris oscuro
             color: "#FFFFFF", // Texto blanco
-            border: "1px solid #CCCCCC", // Borde gris claro
-            borderRadius: 4,
-            boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' // Sombra para botones
+            border: "none",
+            borderRadius: 6,
+            boxShadow: '0 3px 8px rgba(0,0,0,0.5)',
+            fontSize: '18px',
+            transition: 'background-color 0.3s ease, transform 0.2s ease',
+            '&:hover': {
+              backgroundColor: '#555555',
+              transform: 'translateY(-2px)',
+            }
           }}
         >
           Entrar
@@ -1070,138 +1131,215 @@ function App() {
   );
 
   const pantallaInicio = (
-    <div style={{ textAlign: "center", padding: 40, fontFamily: "Arial, sans-serif", backgroundColor: "#FFFFFF", minHeight: "100vh" }}>
+    <div style={{ textAlign: "center", padding: 50, fontFamily: "Roboto, sans-serif", backgroundColor: "#0A0A0A", minHeight: "100vh", display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <h1
         style={{
-          color: "#1a2b40", // Azul marino oscuro
+          color: "#FFFFFF", 
           fontWeight: "bold",
-          fontSize: "40px", // Tamaño de fuente más grande y responsivo
-          marginBottom: "60px", // Aumentado para bajar el título
-          letterSpacing: "3px", // Más espaciado entre letras
-          textShadow: "3px 3px 6px rgba(0,0,0,0.4)", // Sombra más pronunciada
+          fontSize: "52px", 
+          marginBottom: "30px", 
+          letterSpacing: "4px", 
+          textShadow: "4px 4px 10px rgba(0,0,0,0.8)", 
+          background: 'linear-gradient(90deg, #bbbbbb, #ffffff, #bbbbbb)', /* Degradado sutil */
+          WebkitBackgroundClip: 'text', /* Para aplicar el degradado al texto */
+          WebkitTextFillColor: 'transparent', /* Para que el texto sea transparente y muestro el degradado */
+          animation: 'shine 4s infinite linear', /* Animación de brillo */
+          display: 'inline-block', /* Necesario para WebkitBackgroundClip */
         }}
       >
-        Bienvenido al Sistema de Registros de GRUPO CAPITAL
+        <span style={{color: 'transparent'}}>Bienvenido al Sistema de Gestión de </span><span style={{color: '#B0B0B0'}}>GRUPO CAPITAL</span>
       </h1>
+      <style>{`
+        @keyframes shine {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+      `}</style>
       
-      {/* Recuadro para los botones principales */}
       <div
         style={{
-          marginTop: "40px",
-          backgroundColor: "#F8F8F8", // Fondo de recuadro casi blanco
-          border: "1px solid #1a2b40", // Borde azul marino oscuro
-          borderRadius: "8px",
-          padding: "30px",
-          maxWidth: "700px",
-          margin: "40px auto 20px auto",
-          boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
+          marginTop: "50px",
+          backgroundColor: "#1A1A1A", 
+          border: "1px solid #333333", 
+          borderRadius: "12px",
+          padding: "40px",
+          maxWidth: "800px",
+          margin: "50px auto 30px auto",
+          boxShadow: "0px 10px 30px rgba(0,0,0,0.8)",
           display: "grid",
-          gridTemplateColumns: "1fr 1fr", // 2 columnas
-          gap: "20px", // Espacio entre los botones
-          justifyItems: "center", // Centra los elementos dentro de las celdas de la cuadrícula
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", /* Adaptado para que quepan y sean iguales */
+          gap: "25px", 
+          justifyItems: "center", /* Centra los items dentro de sus celdas */
+          width: '90%', 
+          boxSizing: 'border-box',
+          justifyContent: 'center', /* Centra el grid en el contenedor */
         }}
       >
         <button
-          style={{ padding: "15px 30px", fontWeight: "bold", cursor: "pointer", fontSize: "20px", width: "80%", maxWidth: "300px", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
+          style={ESTILOS.button}
           onClick={() => setView("nuevo")}
         >
-          <PlusCircle size={24} /> Nuevo Registro
+          <PlusCircle size={26} /> Nuevo Registro
         </button>
         <button
-          style={{ padding: "15px 30px", fontWeight: "bold", cursor: "pointer", fontSize: "20px", width: "80%", maxWidth: "300px", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
+          style={ESTILOS.button}
           onClick={() => setView("registros")}
         >
-          <List size={24} /> Registros Activos
+          <List size={26} /> Registros Activos
         </button>
         <button
-          style={{ padding: "15px 30px", fontWeight: "bold", cursor: "pointer", fontSize: "20px", width: "80%", maxWidth: "300px", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
-          onClick={() => setView("historial")} // Cambiado a historial para "Registros Pagados"
+          style={ESTILOS.button}
+          onClick={() => setView("historial")} 
         >
-          <List size={24} /> Registros Pagados
+          <List size={26} /> Registros Pagados
         </button>
         <button
-          style={{ padding: "15px 30px", fontWeight: "bold", cursor: "pointer", fontSize: "20px", width: "80%", maxWidth: "300px", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
+          style={ESTILOS.button}
           onClick={() => setView("auditoria")}
         >
-          <BarChart2 size={24} /> Auditoría
+          <BarChart2 size={26} /> Auditoría
         </button>
         <button
-          style={{ padding: "15px 30px", fontWeight: "bold", cursor: "pointer", fontSize: "20px", width: "80%", maxWidth: "300px", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
+          style={ESTILOS.button}
           onClick={() => setView("calendario")}
         >
-          <CalendarDays size={24} /> Calendario
+          <CalendarDays size={26} /> Calendario
         </button>
         <button
-          style={{ padding: "15px 30px", fontWeight: "bold", cursor: "pointer", fontSize: "20px", width: "80%", maxWidth: "300px", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
-          onClick={showWhatsappConfigModal} // Este botón ahora abre el modal de configuración
+          style={ESTILOS.button}
+          onClick={() => setView("clientes")} // Cambiado a "clientes"
         >
-          <Settings size={24} /> Configuración
+          <Users size={26} /> Clientes
         </button>
       </div>
+      <p style={{ marginTop: '50px', fontSize: '14px', color: '#777777' }}>
+        Derechos Reservados <strong>Finestra</strong>
+      </p>
     </div>
   );
 
   const pantallaNuevo = (
-    <div style={{ color: "#666666", padding: 20, backgroundColor: "#FFFFFF", fontFamily: "Arial, sans-serif", paddingTop: "70px" }}>
-      <h2 style={{ fontWeight: "bold", color: '#1a2b40' }}>Nuevo Registro</h2>
-      {loading && <p style={{color: '#666666'}}>Cargando...</p>}
-      {["Apellido", "Nombre", "Monto", "Interés (%)", "Plazo (días)"].map((label, i) => {
-        const field = ["apellido", "nombre", "monto", "interes", "plazo"][i];
+    <div style={{ color: "#E0E0E0", padding: 30, backgroundColor: "#0A0A0A", fontFamily: "Roboto, sans-serif", paddingTop: "80px", borderRadius: '10px', boxShadow: '0 8px 25px rgba(0,0,0,0.7)', maxWidth: '700px', margin: '0 auto' }}>
+      <h2 style={{ fontWeight: "bold", color: '#FFFFFF', marginBottom: '30px', fontSize: '32px', textAlign: 'center' }}>Nuevo Registro</h2>
+      {loading && <p style={{color: '#B0B0B0', textAlign: 'center'}}>Cargando...</p>}
+      
+      <div style={{ position: 'relative', margin: "12px 0" }}>
+        <input
+          style={{ padding: "14px", fontSize: "17px", width: "calc(100% - 28px)", border: '1px solid #333333', backgroundColor: '#2A2A2A', color: '#E0E0E0', borderRadius: '6px', outline: 'none' }}
+          placeholder="Apellido"
+          type="text"
+          value={form.apellido}
+          onChange={handleApellidoChange}
+        />
+        {clientSuggestions.length > 0 && (
+          <ul style={{
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            right: 0,
+            backgroundColor: '#2A2A2A',
+            border: '1px solid #333333',
+            borderRadius: '0 0 6px 6px',
+            listStyle: 'none',
+            padding: 0,
+            margin: 0,
+            zIndex: 100,
+            maxHeight: '200px',
+            overflowY: 'auto',
+          }}>
+            {clientSuggestions.map((client, index) => (
+              <li
+                key={index}
+                onClick={() => handleSuggestionClick(client)}
+                style={{
+                  padding: '10px 14px',
+                  cursor: 'pointer',
+                  borderBottom: '1px solid #333333',
+                  color: '#E0E0E0',
+                  '&:hover': {
+                    backgroundColor: '#3A3A3A',
+                  },
+                  '&:last-child': {
+                    borderBottom: 'none',
+                  }
+                }}
+              >
+                {client.apellido}, {client.nombre}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <input
+        style={{ margin: "12px 0", padding: "14px", fontSize: "17px", width: "calc(100% - 28px)", border: '1px solid #333333', backgroundColor: '#2A2A2A', color: '#E0E0E0', borderRadius: '6px', outline: 'none' }}
+        placeholder="Nombre"
+        type="text"
+        value={form.nombre}
+        onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+      />
+
+      {["Monto", "Interés (%)", "Plazo (días)"].map((label, i) => {
+        const field = ["monto", "interes", "plazo"][i];
         return (
           <input
             key={label}
-            style={{ margin: "8px 0", padding: "6px", fontSize: "16px", width: "100%", border: '1px solid #CCCCCC', color: '#666666' }}
+            style={{ margin: "12px 0", padding: "14px", fontSize: "17px", width: "calc(100% - 28px)", border: '1px solid #333333', backgroundColor: '#2A2A2A', color: '#E0E0E0', borderRadius: '6px', outline: 'none' }}
             placeholder={label}
-            type={field === "monto" || field === "interes" || field === "plazo" ? "number" : "text"}
+            type="number"
             value={form[field]}
             onChange={(e) => setForm({ ...form, [field]: e.target.value })}
           />
         );
       })}
-      <p style={{color: '#666666'}}><b>Monto a devolver:</b> ${calcularMonto().toFixed(2)}</p>
-      <p style={{color: '#666666'}}><b>Fecha de vencimiento:</b> {calcularVencimiento()}</p>
-      <button
-        style={{ marginRight: 10, padding: "10px 20px", fontWeight: "bold", cursor: "pointer", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
-        onClick={handleSubmit}
-        disabled={loading}
-      >
-        <PlusCircle size={20} /> Guardar
-      </button>
-      <button
-        style={{ padding: "10px 20px", fontWeight: "bold", cursor: "pointer", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '10px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
-        onClick={() => setView("home")}
-      >
-        <Home size={20} /> Volver al Inicio
-      </button>
+      <p style={{color: '#B0B0B0', fontSize: '18px', marginTop: '20px'}}><b>Monto a devolver:</b> <span style={{color: '#FFFFFF'}}>${calcularMonto().toFixed(2)}</span></p>
+      <p style={{color: '#B0B0B0', fontSize: '18px', marginBottom: '30px'}}><b>Fecha de vencimiento:</b> <span style={{color: '#FFFFFF'}}>{calcularVencimiento()}</span></p>
+      <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center'}}>
+        <button
+          style={ESTILOS.button}
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          <PlusCircle size={22} /> Guardar
+        </button>
+        <button
+          style={ESTILOS.button}
+          onClick={() => setView("home")}
+        >
+          <Home size={22} /> Volver al Inicio
+        </button>
+      </div>
     </div>
   );
 
   const pantallaRegistros = (
-    <div style={{ color: "#666666", padding: 20, backgroundColor: "#FFFFFF", fontFamily: "Arial, sans-serif", paddingTop: "70px" }}>
+    <div style={{ color: "#E0E0E0", padding: 30, backgroundColor: "#0A0A0A", fontFamily: "Roboto, sans-serif", paddingTop: "80px", minHeight: "100vh" }}>
       <DashboardResumen
         capitalInvertido={capitalInvertido}
         retornoCapitalInvertido={retornoCapitalInvertido}
         ganancia={ganancia}
       />
-      <h2 style={{ textAlign: "center", marginTop: 40, color: '#1a2b40' }}> Registros Activos</h2>
+      <h2 style={{ textAlign: "center", marginTop: 50, marginBottom: '30px', color: '#FFFFFF', fontSize: '32px' }}>Registros Activos</h2>
       {loading ? (
-        <p style={{ textAlign: "center", fontSize: "18px", color: '#666666' }}>Cargando registros...</p>
+        <p style={{ textAlign: "center", fontSize: "20px", color: '#B0B0B0' }}>Cargando registros...</p>
       ) : (
         <table
-          border="1"
           style={{
             width: "100%",
-            background: "#F8F8F8", // Fondo de tabla casi blanco
-            color: "#666666", // Texto gris
-            marginTop: 10,
-            // Eliminado temporalmente: borderCollapse: "collapse",
-            fontSize: "16px",
+            background: "#1A1A1A", 
+            color: "#E0E0E0", 
+            marginTop: 20,
+            borderCollapse: "collapse", // Asegurar que los bordes se colapsen
+            fontSize: "15px",
+            borderRadius: '8px',
+            overflow: 'hidden', // Para que los bordes redondeados se apliquen correctamente a la tabla
+            boxShadow: '0 6px 15px rgba(0,0,0,0.6)',
           }}
         >
           <thead>
             <tr>
-              {["ID", "Apellido", "Nombre", "Monto Entregado", "Interés", "Plazo", "Fechas de Vencimiento", "Monto a Devolver", "Estado", "Acciones"].map((col) => (
-                <th key={col} style={{ border: '1px solid #CCCCCC', padding: '8px', backgroundColor: '#1a2b40', color: '#FFFFFF' }}>{col}</th>
+              {["ID", "Apellido", "Nombre", "Monto Entregado", "Interés", "Plazo", "Vencimiento", "Monto a Devolver", "Estado", "Acciones"].map((col) => (
+                <th key={col} style={ESTILOS.th}>{col}</th>
               ))}
             </tr>
           </thead>
@@ -1210,20 +1348,20 @@ function App() {
               .filter((r) => r.estado !== "Pagado")
               .map((r) => (
                 <tr key={r.id} style={{ textAlign: "center" }}>
-                  <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.id}</td>
-                  <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.apellido}</td>
-                  <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.nombre}</td>
-                  <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>${parseFloat(r.monto).toFixed(2)}</td>
-                  <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.interes}%</td>
-                  <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.plazo} días</td>
-                  <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.vencimiento}</td>
-                  <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>${r.montoDevolver.toFixed(2)}</td>
-                  <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.estado}</td>
-                  <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>
+                  <td style={ESTILOS.td}>{r.id}</td>
+                  <td style={ESTILOS.td}>{r.apellido}</td>
+                  <td style={ESTILOS.td}>{r.nombre}</td>
+                  <td style={ESTILOS.td}>${parseFloat(r.monto).toFixed(2)}</td>
+                  <td style={ESTILOS.td}>{r.interes}%</td>
+                  <td style={ESTILOS.td}>{r.plazo} días</td>
+                  <td style={ESTILOS.td}>{r.vencimiento}</td>
+                  <td style={ESTILOS.td}>${r.montoDevolver.toFixed(2)}</td>
+                  <td style={{ ...ESTILOS.td, fontWeight: 'bold', color: r.estado === 'Activo' ? '#6BFF6B' : '#FF6B6B' }}>{r.estado}</td> {/* Colores para estado */}
+                  <td style={ESTILOS.td}>
                     <select
                       value={r.estado}
                       onChange={(e) => cambiarEstado(r.id, e.target.value)}
-                      style={{ padding: "5px", fontSize: "14px", border: '1px solid #CCCCCC', color: '#666666' }}
+                      style={{ padding: "8px", fontSize: "14px", border: '1px solid #555555', backgroundColor: '#2A2A2A', color: '#E0E0E0', borderRadius: '4px', outline: 'none' }}
                       disabled={loading}
                     >
                       <option value="Activo">Activo</option>
@@ -1236,52 +1374,56 @@ function App() {
           </tbody>
         </table>
       )}
-      <button
-        style={{ marginTop: 20, padding: "10px 20px", fontWeight: "bold", cursor: "pointer", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
-        onClick={() => setView("nuevo")}
-      >
-        <PlusCircle size={20} /> Nuevo Registro
-      </button>
-      <button
-        style={{ marginLeft: 10, marginTop: 20, padding: "10px 20px", fontWeight: "bold", cursor: "pointer", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
-        onClick={() => setView("home")}
-      >
-        <Home size={20} /> Volver al Inicio
-      </button>
-      <button
-        style={{ marginLeft: 10, marginTop: 20, padding: "10px 20px", fontWeight: "bold", cursor: "pointer", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
-        onClick={() => setView("historial")}
-      >
-        <List size={20} /> Ver Registros Pagados
-      </button>
+      <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '40px'}}>
+        <button
+          style={ESTILOS.button}
+          onClick={() => setView("nuevo")}
+        >
+          <PlusCircle size={22} /> Nuevo Registro
+        </button>
+        <button
+          style={ESTILOS.button}
+          onClick={() => setView("home")}
+        >
+          <Home size={22} /> Volver al Inicio
+        </button>
+        <button
+          style={ESTILOS.button}
+          onClick={() => setView("historial")}
+        >
+          <List size={22} /> Ver Registros Pagados
+        </button>
+      </div>
     </div>
   );
 
   const pantallaHistorial = (
-    <div style={{ color: "#666666", padding: 20, backgroundColor: "#FFFFFF", fontFamily: "Arial, sans-serif", paddingTop: "70px" }}>
-      <h2 style={{ textAlign: "center", color: '#1a2b40' }}>Registros Pagados</h2>
+    <div style={{ color: "#E0E0E0", padding: 30, backgroundColor: "#0A0A0A", fontFamily: "Roboto, sans-serif", paddingTop: "80px", minHeight: "100vh" }}>
+      <h2 style={{ textAlign: "center", color: '#FFFFFF', fontSize: '32px', marginBottom: '30px' }}>Registros Pagados</h2>
       <DashboardHistorial
         totalAbonado={totalAbonadoEnHistorial}
         totalDemora={totalDemoraEnHistorial}
       />
       {loading ? (
-        <p style={{ textAlign: "center", fontSize: "18px", color: '#666666' }}>Cargando registros...</p>
+        <p style={{ textAlign: "center", fontSize: "20px", color: '#B0B0B0' }}>Cargando registros...</p>
       ) : (
         <table
-          border="1"
           style={{
             width: "100%",
-            background: "#F8F8F8", // Fondo de tabla casi blanco
-            color: "#666666", // Texto gris
-            marginTop: 10,
-            // Eliminado temporalmente: borderCollapse: "collapse",
-            fontSize: "16px",
+            background: "#1A1A1A", 
+            color: "#E0E0E0", 
+            marginTop: 20,
+            borderCollapse: "collapse", 
+            fontSize: "15px",
+            borderRadius: '8px',
+            overflow: 'hidden',
+            boxShadow: '0 6px 15px rgba(0,0,0,0.6)',
           }}
         >
           <thead>
             <tr>
               {["ID", "Apellido", "Nombre", "Monto", "Interés", "Plazo", "Vencimiento", "Devolver", "Abonado", "Demora"].map((col) => (
-                <th key={col} style={{ border: '1px solid #CCCCCC', padding: '8px', backgroundColor: '#1a2b40', color: '#FFFFFF' }}>{col}</th>
+                <th key={col} style={ESTILOS.th}>{col}</th>
               ))}
             </tr>
           </thead>
@@ -1295,51 +1437,52 @@ function App() {
                     : "0.00";
                 return (
                   <tr key={r.id} style={{ textAlign: "center" }}>
-                    <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.id}</td>
-                    <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.apellido}</td>
-                    <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.nombre}</td>
-                    <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>${parseFloat(r.monto).toFixed(2)}</td>
-                    <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.interes}%</td>
-                    <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.plazo} días</td>
-                    <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>{r.vencimiento}</td>
-                    <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>${r.montoDevolver.toFixed(2)}</td>
-                    <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>${r.abonado?.toFixed(2)}</td>
-                    <td style={{ border: '1px solid #CCCCCC', padding: '8px', color: '#666666' }}>${demora}</td>
+                    <td style={ESTILOS.td}>{r.id}</td>
+                    <td style={ESTILOS.td}>{r.apellido}</td>
+                    <td style={ESTILOS.td}>{r.nombre}</td>
+                    <td style={ESTILOS.td}>${parseFloat(r.monto).toFixed(2)}</td>
+                    <td style={ESTILOS.td}>{r.interes}%</td>
+                    <td style={ESTILOS.td}>{r.plazo} días</td>
+                    <td style={ESTILOS.td}>{r.vencimiento}</td>
+                    <td style={ESTILOS.td}>${r.montoDevolver.toFixed(2)}</td>
+                    <td style={ESTILOS.td}>${r.abonado?.toFixed(2)}</td>
+                    <td style={{ ...ESTILOS.td, color: demora !== "0.00" ? '#FF6B6B' : '#6BFF6B' }}>${demora}</td> {/* Color para demora */}
                   </tr>
                 );
               })}
           </tbody>
         </table>
       )}
-      <button
-        style={{ marginTop: 20, padding: "10px 20px", fontWeight: "bold", cursor: "pointer", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
-        onClick={exportarHistorialCSV}
-      >
-        <Download size={20} /> Exportar a CSV
-      </button>
-      <button
-        style={{ marginLeft: 10, marginTop: 20, padding: "10px 20px", fontWeight: "bold", cursor: "pointer", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
-        onClick={() => setView("home")}
-      >
-        <Home size={20} /> Volver al Inicio
-      </button>
-      <button
-        style={{ marginLeft: 10, marginTop: 20, padding: "10px 20px", fontWeight: "bold", cursor: "pointer", display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: '#1a2b40', color: '#FFFFFF', border: '1px solid #CCCCCC', borderRadius: '4px', boxShadow: '2px 2px 5px rgba(0,0,0,0.2)' }}
-        onClick={() => setView("registros")}
-      >
-        <List size={20} /> Volver a Registros Activos
-      </button>
+      <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '40px'}}>
+        <button
+          style={ESTILOS.button}
+          onClick={exportarHistorialCSV}
+        >
+          <Download size={22} /> Exportar a CSV
+        </button>
+        <button
+          style={ESTILOS.button}
+          onClick={() => setView("home")}
+        >
+          <Home size={22} /> Volver al Inicio
+        </button>
+        <button
+          style={ESTILOS.button}
+          onClick={() => setView("registros")}
+        >
+          <List size={22} /> Volver a Registros Activos
+        </button>
+      </div>
     </div>
   );
 
   return (
     <div
       style={{
-        padding: 20,
-        backgroundColor: "#FFFFFF", // Fondo blanco
+        backgroundColor: "#0A0A0A", // Fondo global de la aplicación
         minHeight: "100vh",
-        color: "#666666", // Texto gris
-        fontFamily: "Arial, sans-serif",
+        color: "#E0E0E0", 
+        fontFamily: "Roboto, sans-serif", // Aplicar fuente global
       }}
     >
       {view !== "login" && <StatusBar usuario={loggedInUser} />}
@@ -1353,16 +1496,27 @@ function App() {
           registros={registros}
           cambiarEstado={cambiarEstado}
           setView={setView}
-          onSendDailyBalanceReport={handleSendDailyBalanceReport} // Pasar la función de reporte diario
+          onSendDailyBalanceReport={handleSendDailyBalanceReport}
+          retornoCapitalInvertido={retornoCapitalInvertido} 
         />
       )}
       {view === "calendario" && (
         <PantallaCalendario
           setView={setView}
           registros={registros}
-          showCustomAlert={showCustomAlert} // Pasar showCustomAlert al calendario
+          showCustomAlert={showCustomAlert} 
         />
       )}
+      {view === "clientes" && (
+        <PantallaClientes
+          setView={setView}
+          clientes={allClients}
+          onEditClient={handleEditClient}
+          loading={loading}
+          showCustomAlert={showCustomAlert}
+        />
+      )}
+
 
       {/* Renderizar el Modal si está visible */}
       {modalVisible && (
@@ -1375,6 +1529,9 @@ function App() {
               modalCallback(modalInputValue);
             } else if (modalType === 'confirm') {
               modalCallback.onConfirm();
+            } else if (modalType === 'editClient') { // Para el modal de edición de cliente
+              // La confirmación ya se maneja dentro de PantallaClientes
+              // Se pasa la función de confirmación desde App a PantallaClientes
             }
             closeModal();
           }}
