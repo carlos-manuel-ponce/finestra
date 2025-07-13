@@ -1,0 +1,40 @@
+/* src/index.css */
+
+/* 1. Directivas de Tailwind CSS - ¡Siempre al principio! */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 2. Tus estilos globales existentes (modificados para usar Inter) */
+body {
+  margin: 0;
+  /* Cambiamos la fuente para que coincida con la configuración de Tailwind 'inter' */
+  /* Si 'Inter' no se carga correctamente, usará las fuentes de respaldo */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* 3. Estilos para la barra de desplazamiento personalizada - Añádelos al final */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* Para scrollbar horizontal */
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
