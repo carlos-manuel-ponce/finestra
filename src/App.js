@@ -464,7 +464,7 @@ const PantallaCalendario = ({ setView, registros, showCustomAlert }) => {
         allEventsForDay.push({ type: 'vencimiento', id: registro.id, ...registro });
       }
       // Prestamos activos con fecha de inicio del prestamo igual al día
-      if (registro.estado === 'Activo' && registro.fecha_creacion?.split('T')[0] === formattedDay) { 
+      if (registro.estado === 'Activo' && registro.created_at?.split('T')[0] === formattedDay) { 
         allEventsForDay.push({ type: 'activo', id: registro.id, ...registro });
       }
     });
@@ -627,7 +627,26 @@ const PantallaClientes = ({ setView, clientes, onEditClient, loading, showCustom
   return (
     <div style={{ paddingTop: "80px", maxWidth: '1200px', margin: '0 auto', backgroundColor: '#0F0F0F', padding: '40px', borderRadius: '10px', boxShadow: '0 8px 25px rgba(0,0,0,0.7)', color: '#E0E0E0' }}>
       <h2 style={{ textAlign: "center", marginBottom: '30px', color: '#FFFFFF', fontSize: '30px', letterSpacing: '1.5px' }}>Gestión de Clientes</h2>
-      
+      {/* INICIO DEL CUADRO DE FONDO GRIS CLARO */}
+        <div style={{
+            backgroundColor: '#2A2A2A', // Fondo gris claro que contrasta bien con el tema oscuro
+            padding: '20px', // Espacio interior
+            borderRadius: '10px', // Bordes redondeados
+            maxWidth: '700px', // Mismo ancho máximo que el párrafo
+            margin: '30px auto 20px auto', // Margen superior, centrado horizontalmente y margen inferior
+            boxShadow: '0 4px 15px rgba(0,0,0,0.5)', // Sombra para dar profundidad
+            border: '1px solid #3A3A3A', // Borde sutil
+        }}>
+            <p style={{
+                fontSize: '15px',
+                color: '#E0E0E0', // Color de texto más claro para el nuevo fondo
+                lineHeight: '1.6',
+                margin: 0, // Elimina el margen por defecto del párrafo dentro del div
+            }}>
+                EN DESARROLLO: Esta sección mostrará una lista de clientes registrados en el sistema. Cada cliente tendrá su apellido, nombre y la cantidad de préstamos registrados y otros datos de interes. Además, se podrá editar la información del cliente haciendo clic en el botón "Editar".
+            </p>
+        </div>
+        {/* FIN DEL CUADRO DE FONDO GRIS CLARO */}
       {loading ? (
         <p style={{ textAlign: "center", fontSize: "20px", color: '#B0B0B0' }}>Cargando clientes...</p>
       ) : (
@@ -857,7 +876,7 @@ function App() {
           vencimiento: vencimientoCalculado,
           estado: "Activo",
           abonado: null,
-          fecha_creacion: new Date().toISOString().split('T')[0], // Añadir fecha de creación
+          created_at: new Date().toISOString().split('T')[0], // Añadir fecha de creación
         },
       ])
       .select();
@@ -1130,93 +1149,116 @@ function App() {
     </div>
   );
 
-  const pantallaInicio = (
+const pantallaInicio = (
     <div style={{ textAlign: "center", padding: 50, fontFamily: "Roboto, sans-serif", backgroundColor: "#0A0A0A", minHeight: "100vh", display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <h1
-        style={{
-          color: "#FFFFFF", 
-          fontWeight: "bold",
-          fontSize: "52px", 
-          marginBottom: "30px", 
-          letterSpacing: "4px", 
-          textShadow: "4px 4px 10px rgba(0,0,0,0.8)", 
-          background: 'linear-gradient(90deg, #bbbbbb, #ffffff, #bbbbbb)', /* Degradado sutil */
-          WebkitBackgroundClip: 'text', /* Para aplicar el degradado al texto */
-          WebkitTextFillColor: 'transparent', /* Para que el texto sea transparente y muestro el degradado */
-          animation: 'shine 4s infinite linear', /* Animación de brillo */
-          display: 'inline-block', /* Necesario para WebkitBackgroundClip */
-        }}
-      >
-        <span style={{color: 'transparent'}}>Bienvenido al Sistema de Gestión de </span><span style={{color: '#B0B0B0'}}>GRUPO CAPITAL</span>
-      </h1>
-      <style>{`
-        @keyframes shine {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
-      `}</style>
-      
-      <div
-        style={{
-          marginTop: "50px",
-          backgroundColor: "#1A1A1A", 
-          border: "1px solid #333333", 
-          borderRadius: "12px",
-          padding: "40px",
-          maxWidth: "800px",
-          margin: "50px auto 30px auto",
-          boxShadow: "0px 10px 30px rgba(0,0,0,0.8)",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", /* Adaptado para que quepan y sean iguales */
-          gap: "25px", 
-          justifyItems: "center", /* Centra los items dentro de sus celdas */
-          width: '90%', 
-          boxSizing: 'border-box',
-          justifyContent: 'center', /* Centra el grid en el contenedor */
-        }}
-      >
-        <button
-          style={ESTILOS.button}
-          onClick={() => setView("nuevo")}
+        <h1
+            style={{
+                color: "#FFFFFF",
+                fontWeight: "bold",
+                fontSize: "52px",
+                marginBottom: "30px",
+                letterSpacing: "4px",
+                textShadow: "4px 4px 10px rgba(0,0,0,0.8)",
+                background: 'linear-gradient(90deg, #bbbbbb, #ffffff, #bbbbbb)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                animation: 'shine 4s infinite linear',
+                display: 'inline-block',
+            }}
         >
-          <PlusCircle size={26} /> Nuevo Registro
-        </button>
-        <button
-          style={ESTILOS.button}
-          onClick={() => setView("registros")}
+            <span style={{color: 'transparent'}}>Bienvenido al Sistema de Gestión de </span><span style={{color: '#B0B0B0'}}>GRUPO CAPITAL</span>
+        </h1>
+        <style>{`
+            @keyframes shine {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+            }
+        `}</style>
+
+        <div
+            style={{
+                marginTop: "50px",
+                backgroundColor: "#1A1A1A",
+                border: "1px solid #333333",
+                borderRadius: "12px",
+                padding: "40px",
+                maxWidth: "800px",
+                margin: "50px auto 30px auto",
+                boxShadow: "0px 10px 30px rgba(0,0,0,0.8)",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: "25px",
+                justifyItems: "center",
+                width: '90%',
+                boxSizing: 'border-box',
+                justifyContent: 'center',
+            }}
         >
-          <List size={26} /> Registros Activos
-        </button>
-        <button
-          style={ESTILOS.button}
-          onClick={() => setView("historial")} 
-        >
-          <List size={26} /> Registros Pagados
-        </button>
-        <button
-          style={ESTILOS.button}
-          onClick={() => setView("auditoria")}
-        >
-          <BarChart2 size={26} /> Auditoría
-        </button>
-        <button
-          style={ESTILOS.button}
-          onClick={() => setView("calendario")}
-        >
-          <CalendarDays size={26} /> Calendario
-        </button>
-        <button
-          style={ESTILOS.button}
-          onClick={() => setView("clientes")} // Cambiado a "clientes"
-        >
-          <Users size={26} /> Clientes
-        </button>
-      </div>
-      <p style={{ marginTop: '50px', fontSize: '14px', color: '#777777' }}>
-        Derechos Reservados <strong>Finestra</strong>
-      </p>
+            {/* ... Tus botones actuales ... */}
+            <button
+                style={ESTILOS.button}
+                onClick={() => setView("nuevo")}
+            >
+                <PlusCircle size={26} /> Nuevo Registro
+            </button>
+            <button
+                style={ESTILOS.button}
+                onClick={() => setView("registros")}
+            >
+                <List size={26} /> Registros Activos
+            </button>
+            <button
+                style={ESTILOS.button}
+                onClick={() => setView("historial")}
+            >
+                <List size={26} /> Registros Pagados
+            </button>
+            <button
+                style={ESTILOS.button}
+                onClick={() => setView("auditoria")}
+            >
+                <BarChart2 size={26} /> Auditoría
+            </button>
+            <button
+                style={ESTILOS.button}
+                onClick={() => setView("calendario")}
+            >
+                <CalendarDays size={26} /> Calendario
+            </button>
+            <button
+                style={ESTILOS.button}
+                onClick={() => setView("clientes")}
+            >
+                <Users size={26} /> Clientes
+            </button>
+        </div>
+
+        {/* INICIO DEL CUADRO DE FONDO GRIS CLARO */}
+        <div style={{
+            backgroundColor: '#2A2A2A', // Fondo gris claro que contrasta bien con el tema oscuro
+            padding: '20px', // Espacio interior
+            borderRadius: '10px', // Bordes redondeados
+            maxWidth: '700px', // Mismo ancho máximo que el párrafo
+            margin: '30px auto 20px auto', // Margen superior, centrado horizontalmente y margen inferior
+            boxShadow: '0 4px 15px rgba(0,0,0,0.5)', // Sombra para dar profundidad
+            border: '1px solid #3A3A3A', // Borde sutil
+        }}>
+            <p style={{
+                fontSize: '15px',
+                color: '#E0E0E0', // Color de texto más claro para el nuevo fondo
+                lineHeight: '1.6',
+                margin: 0, // Elimina el margen por defecto del párrafo dentro del div
+            }}>
+                Este Sistema es seguro y esta protegido por tecnologias de cifrado SSL/TLS contra posibles ciberataques.
+            </p>
+        </div>
+        {/* FIN DEL CUADRO DE FONDO GRIS CLARO */}
+
+        <p style={{ marginTop: '10px', fontSize: '14px', color: '#777777' }}>
+            Derechos Reservados <strong>Finestra</strong>
+        </p>
     </div>
-  );
+);
 
   const pantallaNuevo = (
     <div style={{ color: "#E0E0E0", padding: 30, backgroundColor: "#0A0A0A", fontFamily: "Roboto, sans-serif", paddingTop: "80px", borderRadius: '10px', boxShadow: '0 8px 25px rgba(0,0,0,0.7)', maxWidth: '700px', margin: '0 auto' }}>
