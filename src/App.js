@@ -607,56 +607,49 @@ const PantallaClientes = ({ setView, clientes, onEditClient, loading, showCustom
   const [currentClientToEdit, setCurrentClientToEdit] = useState(null);
   const [editedApellido, setEditedApellido] = useState('');
   const [editedNombre, setEditedNombre] = useState('');
+  const [editedContacto, setEditedContacto] = useState('');
+  const [editedDatosBancarios, setEditedDatosBancarios] = useState('');
 
+  // Al hacer click en editar, carga los datos actuales del cliente
   const handleEditClick = (client) => {
     setCurrentClientToEdit(client);
     setEditedApellido(client.apellido);
     setEditedNombre(client.nombre);
+    setEditedContacto(client.contacto || '');
+    setEditedDatosBancarios(client.datosBancarios || '');
     setEditModalVisible(true);
   };
 
+  // Al confirmar edición, valida y llama a la función de edición
   const handleEditConfirm = async () => {
     if (!editedApellido || !editedNombre) {
       showCustomAlert("El apellido y el nombre no pueden estar vacíos.");
       return;
     }
-    await onEditClient(currentClientToEdit.apellido, currentClientToEdit.nombre, editedApellido, editedNombre);
+    await onEditClient(
+      currentClientToEdit.apellido,
+      currentClientToEdit.nombre,
+      editedApellido,
+      editedNombre,
+      editedContacto,
+      editedDatosBancarios
+    );
     setEditModalVisible(false);
   };
 
   return (
     <div style={{ paddingTop: "80px", maxWidth: '1200px', margin: '0 auto', backgroundColor: '#0F0F0F', padding: '40px', borderRadius: '10px', boxShadow: '0 8px 25px rgba(0,0,0,0.7)', color: '#E0E0E0' }}>
-      <h2 style={{ textAlign: "center", marginBottom: '30px', color: '#FFFFFF', fontSize: '30px', letterSpacing: '1.5px' }}>Gestión de Clientes</h2>
-      {/* INICIO DEL CUADRO DE FONDO GRIS CLARO */}
-        <div style={{
-            backgroundColor: '#2A2A2A', // Fondo gris claro que contrasta bien con el tema oscuro
-            padding: '20px', // Espacio interior
-            borderRadius: '10px', // Bordes redondeados
-            maxWidth: '700px', // Mismo ancho máximo que el párrafo
-            margin: '30px auto 20px auto', // Margen superior, centrado horizontalmente y margen inferior
-            boxShadow: '0 4px 15px rgba(0,0,0,0.5)', // Sombra para dar profundidad
-            border: '1px solid #3A3A3A', // Borde sutil
-        }}>
-            <p style={{
-                fontSize: '15px',
-                color: '#E0E0E0', // Color de texto más claro para el nuevo fondo
-                lineHeight: '1.6',
-                margin: 0, // Elimina el margen por defecto del párrafo dentro del div
-            }}>
-                EN DESARROLLO: Esta sección mostrará una lista de clientes registrados en el sistema. Cada cliente tendrá su apellido, nombre y la cantidad de préstamos registrados y otros datos de interes. Además, se podrá editar la información del cliente haciendo clic en el botón "Editar".
-            </p>
-        </div>
-        {/* FIN DEL CUADRO DE FONDO GRIS CLARO */}
+      <h2 style={{ textAlign: "center", marginBottom: '30px', color: '#FFFFFF', fontSize: '32px' }}>Clientes</h2>
       {loading ? (
         <p style={{ textAlign: "center", fontSize: "20px", color: '#B0B0B0' }}>Cargando clientes...</p>
       ) : (
         <table
           style={{
             width: "100%",
-            background: "#1A1A1A", 
-            color: "#E0E0E0", 
+            background: "#1A1A1A",
+            color: "#E0E0E0",
             marginTop: 20,
-            borderCollapse: "collapse", 
+            borderCollapse: "collapse",
             fontSize: "15px",
             borderRadius: '8px',
             overflow: 'hidden',
@@ -667,7 +660,8 @@ const PantallaClientes = ({ setView, clientes, onEditClient, loading, showCustom
             <tr>
               <th style={ESTILOS.th}>Apellido</th>
               <th style={ESTILOS.th}>Nombre</th>
-              <th style={ESTILOS.th}>Préstamos Registrados</th>
+              <th style={ESTILOS.th}>Contacto</th>
+              <th style={ESTILOS.th}>Datos Bancarios</th>
               <th style={ESTILOS.th}>Acciones</th>
             </tr>
           </thead>
@@ -676,10 +670,11 @@ const PantallaClientes = ({ setView, clientes, onEditClient, loading, showCustom
               <tr key={index} style={{ textAlign: "center" }}>
                 <td style={ESTILOS.td}>{client.apellido}</td>
                 <td style={ESTILOS.td}>{client.nombre}</td>
-                <td style={ESTILOS.td}>{client.loanCount}</td>
-                <td style={ESTILOS.td}>
-                  <button 
-                    onClick={() => handleEditClick(client)} 
+                <td style={ESTILOS.td}>{client.contacto || "-"}</td>
+                <td style={ESTILOS.td}>{client.datosBancarios || "-"}</td>
+                <td style={{ ...ESTILOS.td, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <button
+                    onClick={() => handleEditClick(client)}
                     style={{ ...ESTILOS.button, padding: '8px 15px', fontSize: '14px', gap: '5px', borderRadius: '5px', minWidth: 'unset' }}
                   >
                     <Edit size={16} /> Editar
@@ -691,15 +686,19 @@ const PantallaClientes = ({ setView, clientes, onEditClient, loading, showCustom
         </table>
       )}
 
-      <div style={{ textAlign: 'center', marginTop: '30px' }}>
-        <button 
-          onClick={() => setView("home")} 
-          style={ESTILOS.button}
-        >
-          <Home size={22} /> Volver al Inicio
-        </button>
-      </div>
+      {/* Botón Volver al Inicio */}
+      {!loading && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
+          <button
+            style={ESTILOS.button}
+            onClick={() => setView("home")}
+          >
+            <Home size={22} /> Volver al Inicio
+          </button>
+        </div>
+      )}
 
+      {/* Modal de edición */}
       {editModalVisible && (
         <Modal
           message="Editar Datos del Cliente"
@@ -721,6 +720,20 @@ const PantallaClientes = ({ setView, clientes, onEditClient, loading, showCustom
               type="text"
               value={editedNombre}
               onChange={(e) => setEditedNombre(e.target.value)}
+              style={{ width: 'calc(100% - 20px)', padding: '10px', marginBottom: '15px', borderRadius: '4px', border: '1px solid #555555', backgroundColor: '#2A2A2A', color: '#E0E0E0' }}
+            />
+            <label style={{ display: 'block', marginBottom: '8px' }}>Contacto:</label>
+            <input
+              type="text"
+              value={editedContacto}
+              onChange={(e) => setEditedContacto(e.target.value)}
+              style={{ width: 'calc(100% - 20px)', padding: '10px', marginBottom: '15px', borderRadius: '4px', border: '1px solid #555555', backgroundColor: '#2A2A2A', color: '#E0E0E0' }}
+            />
+            <label style={{ display: 'block', marginBottom: '8px' }}>Datos Bancarios:</label>
+            <input
+              type="text"
+              value={editedDatosBancarios}
+              onChange={(e) => setEditedDatosBancarios(e.target.value)}
               style={{ width: 'calc(100% - 20px)', padding: '10px', marginBottom: '15px', borderRadius: '4px', border: '1px solid #555555', backgroundColor: '#2A2A2A', color: '#E0E0E0' }}
             />
           </div>
@@ -854,43 +867,54 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    if (!form.apellido || !form.nombre || !form.monto || !form.interes || !form.plazo) {
-      showCustomAlert("Por favor, complete todos los campos antes de guardar el registro.");
-      return;
-    }
+  if (!form.apellido || !form.nombre || !form.monto || !form.interes || !form.plazo) {
+    showCustomAlert("Por favor, complete todos los campos antes de guardar el registro.");
+    return;
+  }
 
-    setLoading(true);
-    const montoDevolverCalculado = calcularMonto();
-    const vencimientoCalculado = calcularVencimiento();
+  // Calcular saldo actual
+  const SALDO_INICIAL = 0.00;
+  const totalEgresos = registros.filter(r => r.estado === "Activo").reduce((sum, prestamo) => sum + parseFloat(prestamo.monto || 0), 0);
+  const totalIngresos = registros.filter(r => r.estado === "Pagado").reduce((sum, prestamo) => sum + parseFloat(prestamo.abonado || 0), 0);
+  const saldoActual = SALDO_INICIAL - totalEgresos + totalIngresos;
 
-    const { data, error } = await supabase
-      .from('tabla-registros')
-      .insert([
-        {
-          apellido: form.apellido,
-          nombre: form.nombre,
-          monto: parseFloat(form.monto),
-          interes: parseFloat(form.interes),
-          plazo: parseInt(form.plazo),
-          montoDevolver: montoDevolverCalculado,
-          vencimiento: vencimientoCalculado,
-          estado: "Activo",
-          abonado: null,
-          created_at: new Date().toISOString().split('T')[0], // Añadir fecha de creación
-        },
-      ])
-      .select();
+  if (parseFloat(form.monto) > saldoActual) {
+    showCustomAlert(`No se puede registrar un monto mayor al saldo actual del sistema ($${saldoActual.toFixed(2)}).`);
+    return;
+  }
 
-    if (error) {
-      console.error('Error al insertar registro en Supabase:', error.message);
-      showCustomAlert('Hubo un error al guardar el registro. Por favor, intente de nuevo.');
-    } else if (data && data.length > 0) {
-      setRegistros((prevRegistros) => [data[0], ...prevRegistros]);
-      setForm({ apellido: "", nombre: "", monto: "", interes: "", plazo: "" });
-      setView("registros");
-    }
-    setLoading(false);
-  };
+  setLoading(true);
+  const montoDevolverCalculado = calcularMonto();
+  const vencimientoCalculado = calcularVencimiento();
+
+  const { data, error } = await supabase
+    .from('tabla-registros')
+    .insert([
+      {
+        apellido: form.apellido,
+        nombre: form.nombre,
+        monto: parseFloat(form.monto),
+        interes: parseFloat(form.interes),
+        plazo: parseInt(form.plazo),
+        montoDevolver: montoDevolverCalculado,
+        vencimiento: vencimientoCalculado,
+        estado: "Activo",
+        abonado: null,
+        created_at: new Date().toISOString().split('T')[0],
+      },
+    ])
+    .select();
+
+  if (error) {
+    console.error('Error al insertar registro en Supabase:', error.message);
+    showCustomAlert('Hubo un error al guardar el registro. Por favor, intente de nuevo.');
+  } else if (data && data.length > 0) {
+    setRegistros((prevRegistros) => [data[0], ...prevRegistros]);
+    setForm({ apellido: "", nombre: "", monto: "", interes: "", plazo: "" });
+    setView("registros");
+  }
+  setLoading(false);
+};
 
   const sendWhatsAppNotification = useCallback((message) => {
     if (!whatsappNumber) {
@@ -1152,22 +1176,23 @@ function App() {
 const pantallaInicio = (
     <div style={{ textAlign: "center", padding: 50, fontFamily: "Roboto, sans-serif", backgroundColor: "#0A0A0A", minHeight: "100vh", display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <h1
-            style={{
-                color: "#FFFFFF",
-                fontWeight: "bold",
-                fontSize: "52px",
-                marginBottom: "30px",
-                letterSpacing: "4px",
-                textShadow: "4px 4px 10px rgba(0,0,0,0.8)",
-                background: 'linear-gradient(90deg, #bbbbbb, #ffffff, #bbbbbb)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                animation: 'shine 4s infinite linear',
-                display: 'inline-block',
-            }}
-        >
-            <span style={{color: 'transparent'}}>Bienvenido al Sistema de Gestión de </span><span style={{color: '#B0B0B0'}}>GRUPO CAPITAL</span>
-        </h1>
+    style={{
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        fontSize: "52px",
+        marginBottom: "30px",
+        letterSpacing: "4px",
+        textShadow: "4px 4px 10px rgba(0,0,0,0.8)",
+        background: 'none', // Quitamos el gradiente para que sea blanco puro
+        WebkitBackgroundClip: 'initial',
+        WebkitTextFillColor: 'initial',
+        animation: 'none',
+        display: 'inline-block',
+    }}
+>
+    <span style={{color: '#FFFFFF'}}>Bienvenido al Sistema de Gestión de </span>
+    <span style={{color: '#FFFFFF'}}>GRUPO CAPITAL</span>
+</h1>
         <style>{`
             @keyframes shine {
             0% { background-position: -200% 0; }
