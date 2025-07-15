@@ -1243,28 +1243,6 @@ const pantallaInicio = (
                 <Users size={26} /> Clientes
             </button>
         </div>
-
-        {/* INICIO DEL CUADRO DE FONDO GRIS CLARO */}
-        <div style={{
-            backgroundColor: '#2A2A2A', // Fondo gris claro que contrasta bien con el tema oscuro
-            padding: '20px', // Espacio interior
-            borderRadius: '10px', // Bordes redondeados
-            maxWidth: '700px', // Mismo ancho máximo que el párrafo
-            margin: '30px auto 20px auto', // Margen superior, centrado horizontalmente y margen inferior
-            boxShadow: '0 4px 15px rgba(0,0,0,0.5)', // Sombra para dar profundidad
-            border: '1px solid #3A3A3A', // Borde sutil
-        }}>
-            <p style={{
-                fontSize: '15px',
-                color: '#E0E0E0', // Color de texto más claro para el nuevo fondo
-                lineHeight: '1.6',
-                margin: 0, // Elimina el margen por defecto del párrafo dentro del div
-            }}>
-                Este Sistema es seguro y esta protegido por tecnologias de cifrado SSL/TLS contra posibles ciberataques.
-            </p>
-        </div>
-        {/* FIN DEL CUADRO DE FONDO GRIS CLARO */}
-
         <p style={{ marginTop: '10px', fontSize: '14px', color: '#777777' }}>
             Derechos Reservados <strong>Finestra</strong>
         </p>
