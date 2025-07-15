@@ -614,7 +614,7 @@ const PantallaClientes = ({ setView, clientes, onEditClient, loading, showCustom
   const handleEditClick = (client) => {
     setCurrentClientToEdit(client);
     setEditedApellido(client.apellido);
-    setEditedNombre(client.nombre);
+    setEditedNombre(client.nombre);9
     setEditedContacto(client.contacto || '');
     setEditedDatosBancarios(client.datosBancarios || '');
     setEditModalVisible(true);
@@ -940,20 +940,6 @@ function App() {
       setRegistros(
         registros.map((r) => (r.id === id ? data[0] : r))
       );
-
-      if (nuevoEstado === "Pagado") {
-        const updatedRecord = data[0];
-        const notificationMessage = `*Registro Abonado en Sistema de Registros de GRUPO CAPITAL:*\n\n` +
-                                    `ID: ${updatedRecord.id}\n` +
-                                    `Cliente: ${updatedRecord.nombre} ${updatedRecord.apellido}\n` +
-                                    `Monto a Devolver: $${parseFloat(updatedRecord.montoDevolver).toFixed(2)}\n` +
-                                    `Monto Abonado: $${parseFloat(updatedRecord.abonado).toFixed(2)}\n` +
-                                    `Estado: Pagado`;
-        sendWhatsAppNotification(notificationMessage);
-      }
-    }
-    setLoading(false);
-  };
 
   const cambiarEstado = async (id, nuevoEstado) => {
     if (nuevoEstado === "Pagado") {
