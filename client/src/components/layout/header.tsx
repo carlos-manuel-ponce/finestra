@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import logo from "@assets/generated_images/minimalist_geometric_logo_for_carlos_manuel_ponce.png";
+import logo from "@assets/ChatGPT_Image_8_dic_2025,_13_37_15_1765213554354.png";
 
 export function Header() {
   return (

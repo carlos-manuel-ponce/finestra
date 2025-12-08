@@ -1,6 +1,6 @@
 import { motion, Variants } from "framer-motion";
 import heroImage from "@assets/generated_images/abstract_architectural_black_and_white_photography_for_hero_section.png";
-import logo from "@assets/generated_images/minimalist_geometric_logo_for_carlos_manuel_ponce.png";
+import logo from "@assets/ChatGPT_Image_8_dic_2025,_13_37_15_1765213554354.png";
 
 export function Hero() {
   const fadeInUp: Variants = {
