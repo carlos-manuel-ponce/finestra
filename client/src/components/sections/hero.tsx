@@ -17,60 +17,55 @@ export function Hero() {
   };
 
   return (
-    <section className="min-h-screen pt-20 flex flex-col lg:flex-row overflow-hidden">
-      {/* Left Column - Visual */}
-      <motion.div 
-        className="lg:w-1/2 relative min-h-[50vh] lg:min-h-full bg-secondary flex items-center justify-center overflow-hidden"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2 }}
-      >
-        <div className="absolute inset-0 z-0">
-          <img 
-            src={heroImage} 
-            alt="Abstract Architecture" 
-            className="w-full h-full object-cover opacity-60 grayscale contrast-125"
-          />
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
-        
-        <motion.div 
-          className="relative z-10 text-center p-8 bg-black/20 backdrop-blur-md border border-white/10 max-w-sm mx-auto"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-        >
-          {/* Changed to brightness-0 invert to force white */}
-          <img src={logo} alt="Logo" className="w-24 h-24 mx-auto mb-6 brightness-0 invert" />
-          <p className="text-white font-medium tracking-[0.2em] uppercase text-sm drop-shadow-md">
-            Pasión por la Excelencia
-          </p>
-        </motion.div>
-      </motion.div>
+    <section className="min-h-screen pt-20 relative flex flex-col items-center justify-center overflow-hidden">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={heroImage} 
+          alt="Abstract Architecture" 
+          className="w-full h-full object-cover opacity-40 grayscale contrast-125"
+        />
+        <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background" />
+      </div>
 
-      {/* Right Column - Content */}
-      <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-20 bg-background">
+      <div className="container mx-auto px-6 relative z-10 py-20 flex flex-col items-center justify-center text-center">
         <motion.div 
-          className="max-w-xl"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={stagger}
+          className="max-w-4xl mx-auto flex flex-col items-center"
         >
+          {/* Logo & Frase Section */}
+          <motion.div variants={fadeInUp} className="mb-16 flex flex-col items-center">
+            <img 
+              src={logo} 
+              alt="Carlos Manuel Ponce Logo" 
+              className="w-32 md:w-40 h-auto mb-6 brightness-0 invert opacity-90" 
+            />
+            <div className="h-px w-16 bg-primary/50 mb-4" />
+            <p className="text-sm md:text-base tracking-[0.3em] uppercase text-muted-foreground font-medium">
+              Pasión por la Excelencia
+            </p>
+          </motion.div>
+
+          {/* Title Section */}
           <motion.h1 
-            className="text-4xl lg:text-6xl font-serif font-medium leading-tight mb-8 text-primary"
             variants={fadeInUp}
+            className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium leading-tight mb-8 text-primary max-w-5xl"
           >
             Soluciones para Empresas y Proyectos
           </motion.h1>
           
-          <motion.div variants={fadeInUp}>
-            <div className="h-1 w-20 bg-primary mb-8" />
+          <motion.div variants={fadeInUp} className="w-full flex justify-center mb-10">
+            <div className="h-1 w-24 bg-primary" />
           </motion.div>
 
+          {/* Text Section */}
           <motion.p 
-            className="text-lg lg:text-xl text-muted-foreground leading-relaxed font-light"
             variants={fadeInUp}
+            className="text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed font-light max-w-3xl mx-auto"
           >
             Administramos, acompañamos la toma de decisiones y participamos activamente 
             en el crecimiento de empresas y proyectos, brindando soluciones tecnológicas 
