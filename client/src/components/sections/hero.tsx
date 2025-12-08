@@ -1,5 +1,6 @@
 import { motion, Variants } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import heroImage from "@assets/generated_images/abstract_architectural_black_and_white_photography_for_hero_section.png";
 import logo from "@assets/ChatGPT_Image_8_dic_2025,_13_37_15_1765213554354.png";
 
@@ -96,6 +97,18 @@ export function Hero() {
             y estratégicas que impulsan su desarrollo, fortalecen su estructura y 
             potencian su impacto.
           </motion.p>
+
+          <motion.div variants={fadeInUp} className="mt-12">
+            <Button 
+              variant="outline" 
+              className="text-primary border-primary hover:bg-primary hover:text-primary-foreground rounded-none h-14 px-10 text-lg uppercase tracking-widest font-medium transition-all duration-300"
+              asChild
+            >
+              <a href="https://wa.me/5492664481572" target="_blank" rel="noopener noreferrer">
+                Contacto
+              </a>
+            </Button>
+          </motion.div>
         </motion.div>
       </section>
     </div>
