@@ -21,8 +21,8 @@ export function Hero() {
   return (
     <div className="relative bg-background">
       {/* Shared Background for both sections */}
-      <div className="fixed inset-0 z-0 bg-neutral-950">
-        {/* Removed image for elegant solid black background */}
+      <div className="fixed inset-0 z-0 bg-white">
+        {/* White background for all sections */}
       </div>
 
       {/* PART 1: LOGO & SLOGAN (Full Screen) */}
@@ -36,7 +36,7 @@ export function Hero() {
           <img 
             src={logo} 
             alt="Carlos Manuel Ponce Logo" 
-            className="w-48 md:w-56 h-auto brightness-0 invert opacity-90 drop-shadow-2xl" 
+            className="w-48 md:w-56 h-auto opacity-90 drop-shadow-2xl" 
           />
           
           <div className="hidden md:block w-px h-24 bg-primary/50" />

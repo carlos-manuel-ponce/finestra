@@ -14,7 +14,7 @@ export function Legal() {
           <div className="h-px w-16 bg-primary mx-auto mb-6" />
         </motion.div>
 
-        <div className="h-96 overflow-y-auto pr-6 text-sm text-muted-foreground space-y-8 border border-border p-8 font-serif bg-white/5 shadow-inner">
+        <div className="h-96 overflow-y-auto pr-6 text-sm text-muted-foreground space-y-8 border border-border p-8 font-serif bg-white shadow-inner">
           <section>
             <h3 className="font-bold text-foreground mb-2">1. COMPETENCIA</h3>
             <p className="mb-2">Carlos Manuel Ponce presta servicios de:</p>
