@@ -1,7 +1,6 @@
 import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/sections/hero";
 import { Services } from "@/components/sections/services";
-import { TechCarousel } from "@/components/sections/tech-carousel";
 import { Legal } from "@/components/sections/legal";
 
 export default function Home() {
@@ -10,7 +9,6 @@ export default function Home() {
       <main>
         <Hero />
         <Services />
-        <TechCarousel />
         <Legal />
       </main>
       <Footer />
