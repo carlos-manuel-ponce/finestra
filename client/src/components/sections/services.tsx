@@ -1,20 +1,18 @@
 import { motion } from "framer-motion";
 import { 
   Briefcase, 
-  Monitor, 
   Code2, 
-  Settings2, 
-  BrainCircuit, 
-  ShieldCheck 
+  Database,
+  Globe,
+  AppWindow
 } from "lucide-react";
 
 const services = [
-  { title: "Consultoría Estratégica", icon: Briefcase },
-  { title: "Transformación Digital", icon: Monitor },
-  { title: "Desarrollo de Software", icon: Code2 },
-  { title: "Automatización de Procesos", icon: Settings2 },
-  { title: "Inteligencia Artificial", icon: BrainCircuit },
-  { title: "Ciberseguridad", icon: ShieldCheck }
+  { title: "Páginas Web", icon: Globe },
+  { title: "Apps Web", icon: AppWindow },
+  { title: "Consultoría", icon: Briefcase },
+  { title: "Desarrollo", icon: Code2 },
+  { title: "Soporte Base de Datos", icon: Database }
 ];
 
 export function Services() {
