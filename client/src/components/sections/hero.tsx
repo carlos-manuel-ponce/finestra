@@ -21,14 +21,8 @@ export function Hero() {
   return (
     <div className="relative bg-background">
       {/* Shared Background for both sections */}
-      <div className="fixed inset-0 z-0">
-        <img 
-          src={heroImage} 
-          alt="Abstract Architecture" 
-          className="w-full h-full object-cover opacity-40 grayscale contrast-125"
-        />
-        <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background" />
+      <div className="fixed inset-0 z-0 bg-neutral-950">
+        {/* Removed image for elegant solid black background */}
       </div>
 
       {/* PART 1: LOGO & SLOGAN (Full Screen) */}

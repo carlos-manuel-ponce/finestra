@@ -3,21 +3,21 @@ import { Button } from "@/components/ui/button";
 
 export function Footer() {
   return (
-    <footer className="bg-neutral-950 text-white pt-20 pb-10 relative z-10 border-t border-white/10">
+    <footer className="bg-neutral-950 text-white pt-10 pb-6 relative z-10 border-t border-white/10">
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
           <div>
-            <h2 className="text-3xl font-serif mb-6">Carlos Manuel Ponce</h2>
+            <h2 className="text-2xl font-serif mb-4">Carlos Manuel Ponce</h2>
             <p className="text-white/60 max-w-md font-light">
               Pasión por la Excelencia.
             </p>
           </div>
           
           <div className="flex flex-col items-start md:items-end">
-            <h3 className="text-sm uppercase tracking-widest text-white/40 mb-6">Contacto</h3>
+            <h3 className="text-xs uppercase tracking-widest text-white/40 mb-4">Contacto</h3>
             <Button 
               variant="outline" 
-              className="text-white border-white/30 hover:bg-white hover:text-black rounded-none h-12 px-8 text-lg"
+              className="text-white border-white/30 hover:bg-white hover:text-black rounded-none h-10 px-6 text-sm"
               asChild
             >
               <a href="https://wa.me/5492664481572" target="_blank" rel="noopener noreferrer">
