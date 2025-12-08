@@ -8,8 +8,9 @@ export function Header() {
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
         <Link href="/">
           <a className="flex items-center gap-3">
-            <img src={logo} alt="Carlos Manuel Ponce Logo" className="h-10 w-10 object-contain" />
-            <span className="font-serif text-lg font-medium tracking-wide hidden sm:block">
+            {/* Added invert class to make black logo white */}
+            <img src={logo} alt="Carlos Manuel Ponce Logo" className="h-10 w-10 object-contain invert" />
+            <span className="font-serif text-lg font-medium tracking-wide hidden sm:block text-foreground">
               CARLOS MANUEL PONCE
             </span>
           </a>
@@ -18,7 +19,7 @@ export function Header() {
         <nav className="flex items-center gap-6">
           <Button 
             variant="outline" 
-            className="rounded-none border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 font-medium tracking-wide"
+            className="rounded-none border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 font-medium tracking-wide"
             asChild
           >
             <a href="https://wa.me/5492664481572" target="_blank" rel="noopener noreferrer">

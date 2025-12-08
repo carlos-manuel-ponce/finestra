@@ -29,18 +29,19 @@ export function Hero() {
           <img 
             src={heroImage} 
             alt="Abstract Architecture" 
-            className="w-full h-full object-cover opacity-90 grayscale contrast-125"
+            className="w-full h-full object-cover opacity-60 grayscale contrast-125"
           />
-          <div className="absolute inset-0 bg-black/10" />
+          <div className="absolute inset-0 bg-black/40" />
         </div>
         
         <motion.div 
-          className="relative z-10 text-center p-8 bg-white/10 backdrop-blur-md border border-white/20 max-w-sm mx-auto"
+          className="relative z-10 text-center p-8 bg-black/20 backdrop-blur-md border border-white/10 max-w-sm mx-auto"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          <img src={logo} alt="Logo" className="w-24 h-24 mx-auto mb-6 invert brightness-0" />
+          {/* Changed to brightness-0 invert to force white */}
+          <img src={logo} alt="Logo" className="w-24 h-24 mx-auto mb-6 brightness-0 invert" />
           <p className="text-white font-medium tracking-[0.2em] uppercase text-sm drop-shadow-md">
             Pasión por la Excelencia
           </p>

@@ -33,36 +33,36 @@
 }
 
 :root {
-  /* Minimalist Black & White Theme */
-  --background: 0 0% 100%; /* #FFFFFF */
-  --foreground: 0 0% 7%;   /* #111111 */
+  /* Elegant Dark Theme */
+  --background: 0 0% 5%;    /* #0d0d0d - Almost black, soft and elegant */
+  --foreground: 0 0% 98%;   /* #fafafa - Off-white for text */
 
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 7%;
+  --card: 0 0% 8%;          /* Slightly lighter for cards */
+  --card-foreground: 0 0% 98%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 7%;
+  --popover: 0 0% 8%;
+  --popover-foreground: 0 0% 98%;
 
-  --primary: 0 0% 7%;      /* #111111 */
-  --primary-foreground: 0 0% 100%;
+  --primary: 0 0% 98%;      /* White branding */
+  --primary-foreground: 0 0% 5%; /* Black text on buttons */
 
-  --secondary: 0 0% 96%;   /* Very light gray for contrast */
-  --secondary-foreground: 0 0% 7%;
+  --secondary: 0 0% 12%;    /* Dark gray for secondary sections */
+  --secondary-foreground: 0 0% 98%;
 
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 33%; /* #555555 */
+  --muted: 0 0% 15%;        /* Muted elements */
+  --muted-foreground: 0 0% 65%; /* Soft gray text */
 
-  --accent: 0 0% 96%;
-  --accent-foreground: 0 0% 7%;
+  --accent: 0 0% 15%;
+  --accent-foreground: 0 0% 98%;
 
-  --destructive: 0 84.2% 60.2%;
+  --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
 
-  --border: 0 0% 80%;      /* #CCCCCC */
-  --input: 0 0% 80%;
-  --ring: 0 0% 7%;
+  --border: 0 0% 20%;       /* Subtle borders */
+  --input: 0 0% 20%;
+  --ring: 0 0% 83.1%;
 
-  --radius: 0rem; /* Sharp corners for corporate/minimal look */
+  --radius: 0rem;           /* Sharp corners remain */
 }
 
 @layer base {
