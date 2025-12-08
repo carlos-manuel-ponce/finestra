@@ -67,7 +67,7 @@ export function Hero() {
       </section>
 
       {/* PART 2: TITLE & CONTENT (Full Screen) */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-b from-transparent to-background/90">
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6 bg-white text-black">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -78,19 +78,19 @@ export function Hero() {
           {/* Title Section */}
           <motion.h1 
             variants={fadeInUp}
-            className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium leading-tight mb-10 text-primary max-w-5xl"
+            className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium leading-tight mb-10 text-neutral-900 max-w-5xl"
           >
             Soluciones para Empresas y Proyectos
           </motion.h1>
           
           <motion.div variants={fadeInUp} className="w-full flex justify-center mb-12">
-            <div className="h-1 w-24 bg-primary" />
+            <div className="h-1 w-24 bg-neutral-900" />
           </motion.div>
 
           {/* Text Section */}
           <motion.p 
             variants={fadeInUp}
-            className="text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed font-light max-w-3xl mx-auto"
+            className="text-lg md:text-xl lg:text-2xl text-neutral-600 leading-relaxed font-light max-w-3xl mx-auto"
           >
             Administramos, acompañamos la toma de decisiones y participamos activamente 
             en el crecimiento de empresas y proyectos, brindando soluciones tecnológicas 
@@ -101,7 +101,7 @@ export function Hero() {
           <motion.div variants={fadeInUp} className="mt-12">
             <Button 
               variant="outline" 
-              className="text-primary border-primary hover:bg-primary hover:text-primary-foreground rounded-none h-14 px-10 text-lg uppercase tracking-widest font-medium transition-all duration-300"
+              className="text-neutral-900 border-neutral-900 hover:bg-neutral-900 hover:text-white rounded-none h-14 px-10 text-lg uppercase tracking-widest font-medium transition-all duration-300"
               asChild
             >
               <a href="https://wa.me/5492664481572" target="_blank" rel="noopener noreferrer">
