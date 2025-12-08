@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export function Legal() {
   return (
-    <section className="py-20 bg-background border-t border-border">
+    <section className="py-20 bg-background border-t border-border relative z-10">
       <div className="container mx-auto px-6 max-w-4xl">
         <motion.div
           initial={{ opacity: 0 }}
