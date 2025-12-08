@@ -29,10 +29,9 @@ export function Services() {
           className="mb-16 lg:mb-24"
         >
           <h2 className="text-3xl lg:text-4xl font-serif mb-4">Nuestros Servicios</h2>
-          <p className="text-muted-foreground uppercase tracking-widest text-sm">Expertise & Innovation</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
@@ -42,17 +41,17 @@ export function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="group cursor-default"
+                className="group cursor-default bg-white p-8 hover:shadow-2xl transition-all duration-500 border border-white/10"
               >
-                <div className="h-px w-full bg-border group-hover:bg-primary transition-colors duration-500 mb-6 origin-left" />
-                
-                <div className="mb-4 text-muted-foreground group-hover:text-primary transition-colors duration-300">
-                  <Icon strokeWidth={1} className="w-8 h-8" />
+                <div className="mb-6 text-neutral-800 group-hover:text-black transition-colors duration-300 group-hover:scale-110 transform origin-left">
+                  <Icon strokeWidth={1} className="w-10 h-10" />
                 </div>
                 
-                <h3 className="text-2xl lg:text-3xl font-serif font-normal text-primary/80 group-hover:text-primary transition-colors duration-300">
+                <h3 className="text-2xl font-serif font-medium text-neutral-900 mb-2">
                   {service.title}
                 </h3>
+                
+                <div className="h-0.5 w-12 bg-neutral-200 group-hover:bg-black transition-colors duration-500 mt-4" />
               </motion.div>
             );
           })}
