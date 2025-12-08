@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { 
-  Briefcase, 
   Code2, 
   Database,
   Globe,
@@ -9,12 +8,11 @@ import {
 } from "lucide-react";
 
 const services = [
-  { title: "Páginas Web", icon: Globe },
-  { title: "Apps Web", icon: AppWindow },
-  { title: "Consultoría", icon: Briefcase },
-  { title: "Desarrollo", icon: Code2 },
-  { title: "Soporte a Usuarios", icon: Headset },
-  { title: "Base de Datos", icon: Database }
+  { title: "Desarrollo de Páginas Web", icon: Globe },
+  { title: "Desarrollo de Aplicaciones Web", icon: AppWindow },
+  { title: "Desarrollo de Sistemas de Gestión", icon: Code2 },
+  { title: "Soporte técnico a usuarios", icon: Headset },
+  { title: "Diseño y administración de Bases de Datos", icon: Database }
 ];
 
 export function Services() {
@@ -31,7 +29,7 @@ export function Services() {
           <h2 className="text-3xl lg:text-4xl font-serif mb-4">Nuestros Servicios</h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
@@ -47,7 +45,7 @@ export function Services() {
                   <Icon strokeWidth={1} className="w-10 h-10" />
                 </div>
                 
-                <h3 className="text-2xl font-serif font-medium text-neutral-900 mb-2">
+                <h3 className="text-2xl font-serif font-medium text-neutral-900 mb-2 leading-tight">
                   {service.title}
                 </h3>
                 
