@@ -4,7 +4,8 @@ import {
   Code2, 
   Database,
   Globe,
-  AppWindow
+  AppWindow,
+  Headset
 } from "lucide-react";
 
 const services = [
@@ -12,7 +13,8 @@ const services = [
   { title: "Apps Web", icon: AppWindow },
   { title: "Consultoría", icon: Briefcase },
   { title: "Desarrollo", icon: Code2 },
-  { title: "Soporte Base de Datos", icon: Database }
+  { title: "Soporte a Usuarios", icon: Headset },
+  { title: "Base de Datos", icon: Database }
 ];
 
 export function Services() {
