@@ -9,7 +9,7 @@ export function Footer() {
           <div>
             <h2 className="text-3xl font-serif mb-6">Carlos Manuel Ponce</h2>
             <p className="text-white/60 max-w-md font-light">
-              Impulsando la excelencia en cada proyecto. Soluciones estratégicas para el mundo digital.
+              Pasión por la Excelencia.
             </p>
           </div>
           
