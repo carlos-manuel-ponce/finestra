@@ -21,8 +21,8 @@ export function Hero() {
   return (
     <div className="relative bg-background">
       {/* Shared Background for both sections */}
-      <div className="fixed inset-0 z-0 bg-white">
-        {/* White background for all sections */}
+      <div className="fixed inset-0 z-0 bg-neutral-950">
+        {/* Black background for all sections */}
       </div>
 
       {/* PART 1: LOGO & SLOGAN (Full Screen) */}
@@ -36,7 +36,7 @@ export function Hero() {
           <img 
             src={logo} 
             alt="Carlos Manuel Ponce Logo" 
-            className="w-48 md:w-56 h-auto opacity-90 drop-shadow-2xl" 
+            className="w-48 md:w-56 h-auto brightness-0 invert opacity-90 drop-shadow-2xl" 
           />
           
           <div className="hidden md:block w-px h-24 bg-primary/50" />
@@ -64,7 +64,7 @@ export function Hero() {
       </section>
 
       {/* PART 2: TITLE & CONTENT (Full Screen) */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6 bg-white text-black">
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6 text-white">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -75,19 +75,19 @@ export function Hero() {
           {/* Title Section */}
           <motion.h1 
             variants={fadeInUp}
-            className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium leading-tight mb-10 text-neutral-900 max-w-5xl"
+            className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium leading-tight mb-10 text-white max-w-5xl"
           >
             Soluciones para Empresas y Proyectos
           </motion.h1>
           
           <motion.div variants={fadeInUp} className="w-full flex justify-center mb-12">
-            <div className="h-1 w-24 bg-neutral-900" />
+            <div className="h-1 w-24 bg-white" />
           </motion.div>
 
           {/* Text Section */}
           <motion.p 
             variants={fadeInUp}
-            className="text-lg md:text-xl lg:text-2xl text-neutral-600 leading-relaxed font-light max-w-3xl mx-auto"
+            className="text-lg md:text-xl lg:text-2xl text-neutral-300 leading-relaxed font-light max-w-3xl mx-auto"
           >
             Administramos, acompañamos la toma de decisiones y participamos activamente 
             en el crecimiento de empresas y proyectos, brindando soluciones tecnológicas 
@@ -98,7 +98,7 @@ export function Hero() {
           <motion.div variants={fadeInUp} className="mt-12">
             <Button 
               variant="outline" 
-              className="text-neutral-900 border-neutral-900 hover:bg-neutral-900 hover:text-white rounded-none h-14 px-10 text-lg uppercase tracking-widest font-medium transition-all duration-300"
+              className="text-white border-white hover:bg-white hover:text-black rounded-none h-14 px-10 text-lg uppercase tracking-widest font-medium transition-all duration-300"
               asChild
             >
               <a href="https://wa.me/5492664481572" target="_blank" rel="noopener noreferrer">
