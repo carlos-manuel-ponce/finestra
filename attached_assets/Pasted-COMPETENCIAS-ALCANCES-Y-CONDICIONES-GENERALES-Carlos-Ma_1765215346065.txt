@@ -1,0 +1,95 @@
+COMPETENCIAS, ALCANCES Y CONDICIONES GENERALES
+
+Carlos Manuel Ponce
+
+1. COMPETENCIA
+
+Carlos Manuel Ponce presta servicios de:
+
+Desarrollo de Páginas Web
+
+Desarrollo de Aplicaciones Web
+
+Desarrollo de Sistemas de Gestión
+
+Soporte técnico a usuarios
+
+Diseño y administración de Bases de Datos
+
+2. ALCANCE DE RESPONSABILIDAD
+
+El Titular asume responsabilidad únicamente sobre:
+
+La correcta ejecución técnica de las tareas expresamente pactadas.
+
+La funcionalidad del desarrollo conforme a las especificaciones aprobadas por el Cliente.
+
+La entrega del producto dentro del alcance funcional y los plazos establecidos.
+
+Queda expresamente excluida la responsabilidad por:
+
+Fallas o interrupciones derivadas de servicios de terceros (servidores, hosting, dominios, pasarelas de pago, APIs, servicios en la nube, energía eléctrica o conectividad).
+
+Daños ocasionados por el uso indebido del sistema por parte del Cliente o de terceros.
+
+Pérdida de información causada por factores externos al desarrollo.
+
+Modificaciones no autorizadas sobre el sistema entregado.
+
+3. MODALIDAD DE PRESTACIÓN DEL SERVICIO
+
+Los servicios podrán contratarse bajo las siguientes modalidades:
+
+a) Modalidad por Hora
+
+El valor de la hora profesional será informado previamente.
+
+El cómputo del tiempo será real, verificable y documentado.
+
+El Cliente abonará exclusivamente las horas efectivamente trabajadas.
+
+b) Modalidad por Proyecto
+
+Se establecerá un alcance funcional definido, plazo de ejecución y precio total.
+
+Cualquier ampliación, modificación o funcionalidad adicional será presupuestada por separado.
+
+4. CLIENTE – RESPONSABILIDADES
+
+El Cliente es único y exclusivo responsable por:
+
+La legalidad, veracidad y titularidad de los datos suministrados.
+
+El contenido cargado en los sistemas.
+
+El uso legítimo de imágenes, textos, marcas, logotipos, bases de datos o cualquier material digital.
+
+El Titular no asume responsabilidad legal, administrativa ni penal por los contenidos aportados por el Cliente.
+
+5. PRIVACIDAD Y PROTECCIÓN DE DATOS PERSONALES
+
+El tratamiento de los datos personales se realiza conforme a lo dispuesto por la Ley N.º 25.326 de Protección de Datos Personales y su normativa complementaria.
+
+Se garantiza:
+
+Uso exclusivo para fines técnicos, operativos y contractuales.
+
+Prohibición de cesión a terceros sin consentimiento expreso.
+
+Implementación de medidas razonables de seguridad informática.
+
+6. CONFIDENCIALIDAD
+
+Toda información técnica, operativa, institucional, estratégica o comercial a la que las partes accedan con motivo de la prestación del servicio tendrá carácter estrictamente confidencial.
+
+Las partes se obligan a:
+
+No divulgar información sin autorización expresa y escrita.
+
+No utilizar información obtenida fuera del objeto del servicio.
+
+Mantener el deber de confidencialidad aun finalizada la relación.
+
+7. PROPIEDAD INTELECTUAL
+
+Todo desarrollo, sistema, código fuente, arquitectura digital, diseño, base de datos, documentación técnica, estructura lógica o solución tecnológica creada por el Titular es de su exclusiva propiedad intelectual, salvo acuerdo expreso de cesión o licencia debidamente instrumentado por escrito.
