@@ -31,19 +31,22 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="flex flex-col items-center"
+          className="flex flex-col md:flex-row items-center gap-8 md:gap-12"
         >
           <img 
             src={logo} 
             alt="Carlos Manuel Ponce Logo" 
-            className="w-48 md:w-64 h-auto mb-8 brightness-0 invert opacity-90 drop-shadow-2xl" 
+            className="w-48 md:w-56 h-auto brightness-0 invert opacity-90 drop-shadow-2xl" 
           />
-          <div className="h-px w-24 bg-primary/50 mb-6" />
+          
+          <div className="hidden md:block w-px h-24 bg-primary/50" />
+          <div className="md:hidden h-px w-24 bg-primary/50" />
+
           <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
-            className="text-lg md:text-xl tracking-[0.4em] uppercase text-foreground font-medium text-center"
+            className="text-lg md:text-xl tracking-[0.4em] uppercase text-foreground font-medium text-center md:text-left"
           >
             Pasión por la Excelencia
           </motion.p>
