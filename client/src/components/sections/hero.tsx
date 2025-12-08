@@ -1,4 +1,5 @@
 import { motion, Variants } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import heroImage from "@assets/generated_images/abstract_architectural_black_and_white_photography_for_hero_section.png";
 import logo from "@assets/ChatGPT_Image_8_dic_2025,_13_37_15_1765213554354.png";
 
@@ -17,9 +18,9 @@ export function Hero() {
   };
 
   return (
-    <section className="min-h-screen pt-20 relative flex flex-col items-center justify-center overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
+    <div className="relative bg-background">
+      {/* Shared Background for both sections */}
+      <div className="fixed inset-0 z-0">
         <img 
           src={heroImage} 
           alt="Abstract Architecture" 
@@ -29,36 +30,59 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 py-20 flex flex-col items-center justify-center text-center">
+      {/* PART 1: LOGO & SLOGAN (Full Screen) */}
+      <section className="relative z-10 h-screen flex flex-col items-center justify-center p-6">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="flex flex-col items-center"
+        >
+          <img 
+            src={logo} 
+            alt="Carlos Manuel Ponce Logo" 
+            className="w-48 md:w-64 h-auto mb-8 brightness-0 invert opacity-90 drop-shadow-2xl" 
+          />
+          <div className="h-px w-24 bg-primary/50 mb-6" />
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="text-lg md:text-xl tracking-[0.4em] uppercase text-foreground font-medium text-center"
+          >
+            Pasión por la Excelencia
+          </motion.p>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 10, 0] }}
+          transition={{ delay: 1.5, duration: 2, repeat: Infinity }}
+          className="absolute bottom-12 text-muted-foreground"
+        >
+          <ChevronDown className="w-8 h-8 opacity-50" />
+        </motion.div>
+      </section>
+
+      {/* PART 2: TITLE & CONTENT (Full Screen) */}
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-b from-transparent to-background/90">
         <motion.div 
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
           variants={stagger}
-          className="max-w-4xl mx-auto flex flex-col items-center"
+          className="max-w-4xl mx-auto flex flex-col items-center text-center"
         >
-          {/* Logo & Frase Section */}
-          <motion.div variants={fadeInUp} className="mb-16 flex flex-col items-center">
-            <img 
-              src={logo} 
-              alt="Carlos Manuel Ponce Logo" 
-              className="w-32 md:w-40 h-auto mb-6 brightness-0 invert opacity-90" 
-            />
-            <div className="h-px w-16 bg-primary/50 mb-4" />
-            <p className="text-sm md:text-base tracking-[0.3em] uppercase text-muted-foreground font-medium">
-              Pasión por la Excelencia
-            </p>
-          </motion.div>
-
           {/* Title Section */}
           <motion.h1 
             variants={fadeInUp}
-            className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium leading-tight mb-8 text-primary max-w-5xl"
+            className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium leading-tight mb-10 text-primary max-w-5xl"
           >
             Soluciones para Empresas y Proyectos
           </motion.h1>
           
-          <motion.div variants={fadeInUp} className="w-full flex justify-center mb-10">
+          <motion.div variants={fadeInUp} className="w-full flex justify-center mb-12">
             <div className="h-1 w-24 bg-primary" />
           </motion.div>
 
@@ -73,7 +97,7 @@ export function Hero() {
             potencian su impacto.
           </motion.p>
         </motion.div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
