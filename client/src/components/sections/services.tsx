@@ -1,12 +1,20 @@
 import { motion } from "framer-motion";
+import { 
+  Briefcase, 
+  Monitor, 
+  Code2, 
+  Settings2, 
+  BrainCircuit, 
+  ShieldCheck 
+} from "lucide-react";
 
 const services = [
-  "Consultoría Estratégica",
-  "Transformación Digital",
-  "Desarrollo de Software",
-  "Automatización de Procesos",
-  "Inteligencia Artificial",
-  "Ciberseguridad"
+  { title: "Consultoría Estratégica", icon: Briefcase },
+  { title: "Transformación Digital", icon: Monitor },
+  { title: "Desarrollo de Software", icon: Code2 },
+  { title: "Automatización de Procesos", icon: Settings2 },
+  { title: "Inteligencia Artificial", icon: BrainCircuit },
+  { title: "Ciberseguridad", icon: ShieldCheck }
 ];
 
 export function Services() {
@@ -25,21 +33,29 @@ export function Services() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-              className="group cursor-default"
-            >
-              <div className="h-px w-full bg-border group-hover:bg-primary transition-colors duration-500 mb-6 origin-left" />
-              <h3 className="text-2xl lg:text-3xl font-serif font-normal text-primary/80 group-hover:text-primary transition-colors duration-300">
-                {service}
-              </h3>
-            </motion.div>
-          ))}
+          {services.map((service, index) => {
+            const Icon = service.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                className="group cursor-default"
+              >
+                <div className="h-px w-full bg-border group-hover:bg-primary transition-colors duration-500 mb-6 origin-left" />
+                
+                <div className="mb-4 text-muted-foreground group-hover:text-primary transition-colors duration-300">
+                  <Icon strokeWidth={1} className="w-8 h-8" />
+                </div>
+                
+                <h3 className="text-2xl lg:text-3xl font-serif font-normal text-primary/80 group-hover:text-primary transition-colors duration-300">
+                  {service.title}
+                </h3>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
