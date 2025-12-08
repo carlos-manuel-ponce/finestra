@@ -28,12 +28,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-white/30 font-light">
+        <div className="border-t border-white/10 pt-8 flex justify-center items-center text-xs text-white/30 font-light">
           <p>© {new Date().getFullYear()} Carlos Manuel Ponce. Todos los derechos reservados.</p>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-            <a href="#" className="hover:text-white transition-colors">Twitter</a>
-          </div>
         </div>
       </div>
     </footer>
