@@ -105,7 +105,7 @@ export function Hero() {
               asChild
             >
               <a href="https://wa.me/5492664481572" target="_blank" rel="noopener noreferrer">
-                Contacto
+                Iniciar Conversación
               </a>
             </Button>
           </motion.div>
