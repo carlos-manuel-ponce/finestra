@@ -1,0 +1,165 @@
+{
+  "project": {
+    "name": "Carlos Manuel Ponce Web Institucional",
+    "type": "Landing Page Profesional",
+    "style": "Minimalista, Corporativo Premium, Blanco y Negro",
+    "responsive": true,
+    "languages": ["HTML", "CSS", "JavaScript"],
+    "frameworks": [],
+    "animations": "Suaves, tipo editorial (fade + slide)"
+  },
+
+  "identity": {
+    "brand_name": "Carlos Manuel Ponce",
+    "slogan": "PASIÓN POR LA EXCELENCIA",
+    "tone": ["Ejecutivo", "Institucional", "Tecnológico", "Premium"],
+    "colors": {
+      "background": "#FFFFFF",
+      "text_primary": "#111111",
+      "text_secondary": "#555555",
+      "border": "#CCCCCC"
+    },
+    "typography": {
+      "title": "Playfair Display",
+      "body": "Inter"
+    }
+  },
+
+  "header": {
+    "layout": "Minimal",
+    "elements": [
+      {
+        "type": "button",
+        "label": "Contacto",
+        "action": "external_link",
+        "url": "https://wa.me/5492664481572",
+        "target": "_blank",
+        "style": "outlined_black"
+      }
+    ]
+  },
+
+  "hero": {
+    "layout": "Two Columns Desktop / One Column Mobile",
+    "left": {
+      "type": "image_block",
+      "image": "logo-ponce.png",
+      "slogan": {
+        "text": "PASIÓN POR LA EXCELENCIA",
+        "style": "uppercase, letter-spacing, muted gray"
+      }
+    },
+    "right": {
+      "title": {
+        "tag": "h1",
+        "text": "Soluciones para Empresas y Proyectos"
+      },
+      "introduction": {
+        "tag": "p",
+        "text": "Administramos, acompañamos la toma de decisiones y participamos activamente en el crecimiento de empresas y proyectos, brindando soluciones tecnológicas y estratégicas que impulsan su desarrollo, fortalecen su estructura y potencian su impacto."
+      }
+    },
+    "animation": {
+      "type": "fadeUp",
+      "sequence": ["logo", "title", "text"],
+      "duration": "0.9s"
+    }
+  },
+
+  "services": {
+    "section_title": "Nuestros Servicios",
+    "layout": "Responsive Grid",
+    "columns": "Auto-fit",
+    "items": [
+      "Consultoría Estratégica",
+      "Transformación Digital",
+      "Desarrollo de Software",
+      "Automatización de Procesos",
+      "Inteligencia Artificial",
+      "Ciberseguridad"
+    ],
+    "style": "Solo tipografía, sin íconos, sin tarjetas, premium editorial"
+  },
+
+  "technology_carousel": {
+    "type": "Continuous Infinite Carousel",
+    "speed": "Very Slow",
+    "loop": true,
+    "hover_effect": "scale(1.1)",
+    "display": "Color",
+    "technologies": [
+      "Supabase",
+      "Python",
+      "HTML",
+      "CSS",
+      "C++",
+      "JavaScript",
+      "Firebase",
+      "OpenAI",
+      "React",
+      "Gemini",
+      "Twilio"
+    ],
+    "behavior": {
+      "no_empty_spaces": true,
+      "auto_scroll": true,
+      "pause_on_hover": false
+    }
+  },
+
+  "legal_section": {
+    "title": "TÉRMINOS Y CONDICIONES",
+    "intro_text": "Documento oficial de Carlos Manuel Ponce. Este contrato regula la relación jurídica, comercial y tecnológica entre las partes intervinientes.",
+    "style": {
+      "background": "white",
+      "divider": true,
+      "font_title": "Playfair Display",
+      "font_body": "Inter"
+    },
+    "scroll_behavior": "Visible with natural scroll"
+  },
+
+  "ux_rules": {
+    "no_scroll_blocking": true,
+    "no_overflow_hidden_on_main_container": true,
+    "mobile_first": true,
+    "desktop_grid": true
+  },
+
+  "seo": {
+    "title": "Carlos Manuel Ponce — Soluciones para Empresas y Proyectos",
+    "description": "Estrategia, tecnología e innovación para empresas, proyectos y organizaciones públicas y privadas.",
+    "keywords": [
+      "consultoría",
+      "tecnología",
+      "estrategia",
+      "desarrollo de software",
+      "automatización",
+      "inteligencia artificial",
+      "ciberseguridad"
+    ]
+  },
+
+  "contact": {
+    "primary_channel": "WhatsApp",
+    "number": "2664481572",
+    "url": "https://wa.me/5492664481572"
+  },
+
+  "target_audience": [
+    "Empresas",
+    "Emprendedores",
+    "Sector Público",
+    "Sector Privado",
+    "Proyectos Tecnológicos",
+    "Gestión Institucional"
+  ],
+
+  "branding_goals": [
+    "Transmitir excelencia",
+    "Transmitir confianza",
+    "Transmitir innovación",
+    "Transmitir solidez institucional",
+    "Transmitir alto valor profesional"
+  ]
+}
