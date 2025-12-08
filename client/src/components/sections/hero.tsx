@@ -87,7 +87,7 @@ export function Hero() {
           {/* Text Section */}
           <motion.p 
             variants={fadeInUp}
-            className="text-lg md:text-xl lg:text-2xl text-neutral-300 leading-relaxed font-light max-w-3xl mx-auto"
+            className="text-lg md:text-xl lg:text-2xl text-neutral-300 leading-relaxed font-light max-w-3xl mx-auto text-justify"
           >
             Administramos, acompañamos la toma de decisiones y participamos activamente 
             en el crecimiento de empresas y proyectos, brindando soluciones tecnológicas 
