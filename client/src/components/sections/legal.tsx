@@ -12,9 +12,6 @@ export function Legal() {
         >
           <h2 className="text-2xl font-serif mb-4">COMPETENCIAS, ALCANCES Y CONDICIONES GENERALES</h2>
           <div className="h-px w-16 bg-primary mx-auto mb-6" />
-          <p className="text-muted-foreground italic">
-            Carlos Manuel Ponce — Documento oficial
-          </p>
         </motion.div>
 
         <div className="h-96 overflow-y-auto pr-6 text-sm text-muted-foreground space-y-8 border border-border p-8 font-serif bg-white/5 shadow-inner">
